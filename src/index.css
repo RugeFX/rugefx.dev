@@ -141,6 +141,21 @@ layer(base);
   grid-area: hint;
 }
 
+@utility mask-experience-rail {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black calc(100% - 88px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black calc(100% - 88px),
+    transparent 100%
+  );
+}
+
 @utility container {
   margin-inline: auto;
   padding-inline: 2rem;
