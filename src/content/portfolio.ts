@@ -1,6 +1,5 @@
 import {
   type IconType,
-  SiRadixui,
   SiNextdotjs,
   SiTailwindcss,
   SiReact,
@@ -8,15 +7,23 @@ import {
   SiFramer,
   SiExpo,
   SiGithubactions,
+  SiVite,
 } from "@icons-pack/react-simple-icons";
-import icon from "../assets/RugeFX.png";
-import qurbanAsyik from "../assets/QurbanAsyik.png";
-import sattu from "../assets/Sattu.png";
-import sga from "../assets/SGA.png";
+import icon from "@/assets/RugeFX.png";
+import qurbanAsyik from "@/assets/QurbanAsyik.png";
+import sattu from "@/assets/Sattu.png";
+import sga from "@/assets/SGA.png";
+import type { ProjectSlug } from "@/content/project-slugs";
+
+export type ProjectCategory = "Mobile" | "Websites";
 
 export interface Project {
+  slug: ProjectSlug;
   title: string;
-  category: "Mobile" | "Web Apps" | "Websites";
+  summary: string;
+  seoDescription: string;
+  socialImage: string;
+  category: ProjectCategory;
   description: string;
   imageSrc?: string;
   imageFit?: "cover" | "contain";
@@ -101,7 +108,12 @@ export const workExperiences: WorkExperience[] = [
 
 export const projects: Project[] = [
   {
-    title: "Qurban Asyik Mobile App",
+    slug: "qurban-asyik",
+    title: "Qurban Asyik",
+    summary: "Mobile commerce, from browsing to checkout.",
+    seoDescription:
+      "Explore Qurban Asyik, a React Native and Expo mobile commerce app for browsing, checkout, and Midtrans payments.",
+    socialImage: "/og/qurban-asyik.jpg",
     category: "Mobile",
     description:
       "A customer-facing e-commerce app for discovering products, managing a cart, and completing Midtrans Snap transactions. Built with React Native and Expo, integrated through an OpenAPI contract, and shipped to Google Play and the App Store with EAS and GitHub Actions.",
@@ -133,7 +145,12 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "Sattu.id Landing Page Redesign",
+    slug: "sattu-id",
+    title: "Sattu.id",
+    summary: "A fresh website for Sattu.id.",
+    seoDescription:
+      "See the Sattu.id landing page built with React, Next.js, Tailwind CSS, shadcn/ui, and purposeful interface motion.",
+    socialImage: "/og/sattu-id.jpg",
     category: "Websites",
     description:
       "A new landing page implemented with Sattu.id's UI/UX designer using TypeScript, Next.js, React, Tailwind CSS, shadcn/ui, and Framer Motion.",
@@ -160,7 +177,12 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "SGA Cakrawala Landing Page",
+    slug: "sga-cakrawala",
+    title: "SGA Cakrawala",
+    summary: "A home for the student community.",
+    seoDescription:
+      "Explore the SGA Cakrawala student community website built with React, TypeScript, Tailwind CSS, shadcn/ui, and Vite.",
+    socialImage: "/og/sga-cakrawala.jpg",
     category: "Websites",
     description:
       "A landing page for the student government association of Cakrawala University, made by the Research and Technology team. Built with Typescript, React, Tailwind CSS, shadcn/ui, and Vite",
@@ -183,10 +205,15 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "RugeFX Personal Website",
+    slug: "rugefx",
+    title: "RugeFX",
+    summary: "The portfolio you are exploring now.",
+    seoDescription:
+      "See how the RugeFX portfolio was built with React, TanStack Router, Tailwind CSS, shadcn/ui, and Motion.",
+    socialImage: "/og/rugefx.jpg",
     category: "Websites",
     description:
-      "My personal portfolio website, built with Typescript, React, Vite, Tailwind CSS, Radix, shadcn/ui, and Framer Motion",
+      "My personal portfolio website, built with TypeScript, React, TanStack Start, Vite, Tailwind CSS, React Aria Components, shadcn/ui, and Motion.",
     imageSrc: icon,
     siteUrl: null,
     repositoryUrl: "https://github.com/RugeFX/rugefx.com",
@@ -196,8 +223,8 @@ export const projects: Project[] = [
         icon: SiReact,
       },
       {
-        label: "Radix UI",
-        icon: SiRadixui,
+        label: "Vite",
+        icon: SiVite,
       },
       {
         label: "Tailwind",
@@ -214,3 +241,7 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+export function getProjectBySlug(slug: string) {
+  return projects.find((project) => project.slug === slug);
+}

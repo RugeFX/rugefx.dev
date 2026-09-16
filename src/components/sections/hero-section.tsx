@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { MotionConfig, motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import HeroName from "@/components/hero/hero-name";
@@ -16,6 +15,7 @@ import {
   useMagneticCard,
 } from "@/components/ui/magnetic-card";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { portfolioRevealEase } from "@/lib/portfolio-motion";
 import { cn } from "@/lib/utils";
 
@@ -48,12 +48,8 @@ interface HeroSectionProps {
 export default function HeroSection({
   shouldPlayInitialEntrance,
 }: HeroSectionProps) {
-  const [usesStackedHeroLayout] = useState(
-    () => window.matchMedia("(max-width: 1120px)").matches,
-  );
-  const [usesMobileNavbarLayout] = useState(
-    () => window.matchMedia("(max-width: 759.98px)").matches,
-  );
+  const usesStackedHeroLayout = useMediaQuery("(max-width: 1120px)");
+  const usesMobileNavbarLayout = useMediaQuery("(max-width: 759.98px)");
   const mainCardMagnetism = useMagneticCard();
   const aboutCardMagnetism = useMagneticCard();
   const locationCardMagnetism = useMagneticCard(2.5);

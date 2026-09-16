@@ -7,7 +7,7 @@ import {
   type MotionValue,
 } from "motion/react";
 import { ArrowDown } from "lucide-react";
-import { workExperiences, type WorkExperience } from "@/lib/data";
+import { workExperiences, type WorkExperience } from "@/content/portfolio";
 import { cn } from "@/lib/utils";
 import { sectionTitleClass } from "@/components/sections/section-styles";
 

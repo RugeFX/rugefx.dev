@@ -23,6 +23,8 @@ function isTheme(value: string | null | undefined): value is Theme {
 }
 
 function getInitialTheme(): Theme {
+  if (typeof document === "undefined") return "light";
+
   const documentTheme = document.documentElement.dataset.theme;
   if (isTheme(documentTheme)) return documentTheme;
 
@@ -49,21 +51,24 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
+  // The server and the first hydration render must agree. The inline theme
+  // bootstrap updates the document before paint, then this effect synchronizes
+  // the React context with that value.
+  const [theme, setThemeState] = useState<Theme>("light");
 
   useEffect(() => {
-    applyTheme(theme);
-
-    try {
-      window.localStorage.setItem(themeStorageKey, theme);
-    } catch {
-      // Theme still works for the current page when persistence is unavailable.
-    }
-  }, [theme]);
+    setThemeState(getInitialTheme());
+  }, []);
 
   const setTheme = useCallback((nextTheme: Theme) => {
     applyTheme(nextTheme);
     setThemeState(nextTheme);
+
+    try {
+      window.localStorage.setItem(themeStorageKey, nextTheme);
+    } catch {
+      // Theme still works for the current page when persistence is unavailable.
+    }
   }, []);
 
   const toggleTheme = useCallback(() => {

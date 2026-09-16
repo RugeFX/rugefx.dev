@@ -15,10 +15,7 @@ import {
   magneticLinkCardClass,
   useMagneticCard,
 } from "@/components/ui/magnetic-card";
-import {
-  presentedProjects,
-  type PresentedProject,
-} from "@/lib/project-presentation";
+import { projects, type Project } from "@/content/portfolio";
 import { portfolioRevealEase } from "@/lib/portfolio-motion";
 import { cn } from "@/lib/utils";
 import { sectionTitleClass } from "@/components/sections/section-styles";
@@ -55,8 +52,8 @@ export default function ProjectsSection() {
   });
   const isInView = projectNavigation.hasRevealedGrid || enteredViewport;
   const isInitialEntrance = !hasEnteredRef.current;
-  const visibleProjects = presentedProjects.filter(
-    ({ project }) => category === "All" || project.category === category,
+  const visibleProjects = projects.filter(
+    (project) => category === "All" || project.category === category,
   );
 
   useEffect(() => {
@@ -182,7 +179,7 @@ function getProjectLayoutClass(slug: string, isBento: boolean): string {
 }
 
 interface ProjectLayoutItemProps {
-  project: PresentedProject;
+  project: Project;
   index: number;
   isBento: boolean;
   isInView: boolean;
@@ -263,7 +260,7 @@ function ProjectLayoutItem({
 }
 
 interface PreviewProjectProps {
-  project: PresentedProject;
+  project: Project;
 }
 
 function PreviewProject({ project }: PreviewProjectProps) {
@@ -287,7 +284,7 @@ function PreviewProject({ project }: PreviewProjectProps) {
       <div
         className={cn(
           "bg-portfolio-tint flex min-h-0 flex-1 items-center justify-center overflow-hidden",
-          project.project.imageFit === "contain" && "bg-portfolio-media p-7",
+          project.imageFit === "contain" && "bg-portfolio-media p-7",
         )}
       >
         <img
@@ -295,9 +292,9 @@ function PreviewProject({ project }: PreviewProjectProps) {
           className={cn(
             "h-full w-full object-cover opacity-0 transition-opacity duration-180",
             imageLoaded && "opacity-100",
-            project.project.imageFit === "contain" && "object-contain",
+            project.imageFit === "contain" && "object-contain",
           )}
-          src={project.project.imageSrc}
+          src={project.imageSrc}
           alt={`${project.title} preview`}
           loading="lazy"
           onLoad={() => setImageLoaded(true)}
@@ -325,7 +322,7 @@ function PreviewProject({ project }: PreviewProjectProps) {
           className="mt-[15px] flex flex-wrap gap-[7px]"
           aria-label="Technology stack"
         >
-          {project.project.technologies.map((technology) => (
+          {project.technologies.map((technology) => (
             <span
               key={technology.label}
               className="bg-portfolio-tint-soft text-portfolio-brand-strong inline-flex h-[30px] w-[30px] items-center justify-center rounded-lg [&_svg]:h-[15px] [&_svg]:w-[15px] [&_svg]:fill-current"

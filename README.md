@@ -4,21 +4,22 @@ A modern, responsive portfolio website built with React, TypeScript, and Tailwin
 
 ## ✨ Features
 
-- **Modern Tech Stack**: React 19, TypeScript, Vite, Tailwind CSS 4
+- **Modern Tech Stack**: React 19, TanStack Start, TypeScript, Vite, Tailwind CSS 4
 - **Smooth Animations**: Framer Motion powered animations and transitions
 - **Theme Support**: Dark/light mode with system preference detection
 - **Responsive Design**: Mobile-first approach with optimal viewing on all devices
 - **Timeline UI**: Interactive work experience timeline with connecting lines
 - **Project Showcase**: Dynamic project grid with technology tags
 - **Performance Focused**: Optimized images and lazy loading
+- **Search Ready**: Prerendered routes, route metadata, structured data, and sitemap generation
 
 ## 🛠️ Tech Stack
 
-- **Framework**: React 19 with TypeScript
+- **Framework**: React 19 with TanStack Start and TanStack Router
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS 4 with CSS Variables
-- **UI Components**: Radix UI primitives
-- **Animations**: Framer Motion
+- **UI Components**: React Aria Components and shadcn/ui
+- **Animations**: Motion for React
 - **Icons**: Lucide React & Simple Icons
 - **Package Manager**: Bun
 
@@ -51,8 +52,12 @@ src/
 │   ├── theme/           # Theme toggler component
 │   └── ui/              # Reusable UI components
 ├── contexts/            # React contexts (theme provider)
+├── content/             # Portfolio content and route slugs
+├── config/              # Site-wide identity and URL configuration
 ├── hooks/               # Custom React hooks
-├── lib/                 # Utilities and data
+├── lib/                 # Utilities, motion helpers, and SEO metadata
+├── pages/               # Route-level page compositions
+├── routes/              # TanStack Start route definitions
 └── assets/              # Static assets (images, icons)
 ```
 
@@ -60,7 +65,7 @@ src/
 
 - **Colors**: CSS custom properties with dark/light mode support
 - **Typography**: Custom font display with optimized loading
-- **Components**: Consistent design patterns using Radix UI
+- **Components**: Accessible interaction patterns using React Aria Components
 - **Animations**: Smooth enter/exit animations with proper viewport detection
 - **Spacing**: Systematic spacing scale using Tailwind CSS
 
@@ -77,11 +82,18 @@ The project uses strict TypeScript configuration and ESLint for code quality. Al
 
 ### Key Dependencies
 
-- **UI**: Radix UI components for accessibility
+- **Routing and rendering**: TanStack Start with static prerendering
+- **UI**: React Aria Components and shadcn/ui
 - **Styling**: Tailwind CSS with custom configuration
-- **Animation**: Framer Motion for smooth interactions
+- **Animation**: Motion for React
 - **Icons**: Lucide React for consistent iconography
 - **Build**: Vite for fast development and optimized builds
+
+### Deployment output
+
+`bun run build` prerenders the homepage and every linked project page. For a
+static host, publish `dist/client`. A server deployment can use the generated
+entry at `dist/server/server.js`.
 
 ## 📄 License
 

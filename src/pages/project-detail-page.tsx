@@ -1,39 +1,22 @@
-import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { LinkButton } from "@/components/ui/button";
-import { buttonVariants } from "@/components/ui/button-variants";
-import { getPresentedProject } from "@/lib/project-presentation";
+import type { Project } from "@/content/portfolio";
 
 import ProjectDetailPanel from "@/components/projects/project-detail-panel";
 import { projectNavigation } from "@/lib/project-navigation";
 import { portfolioRevealEase } from "@/lib/portfolio-motion";
 
 interface ProjectDetailPageProps {
-  projectSlug: string;
+  project: Project;
 }
 
-export default function ProjectDetailPage({
-  projectSlug,
-}: ProjectDetailPageProps) {
+export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
   const reduced = Boolean(useReducedMotion());
   const router = useRouter();
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const presentedProject = getPresentedProject(projectSlug);
-
-  if (!presentedProject) {
-    return (
-      <main className="grid min-h-screen place-content-center gap-5 text-center">
-        <h1 className="font-display text-5xl">Project not found.</h1>
-        <Link className={buttonVariants({ variant: "default" })} to="/">
-          Return home
-        </Link>
-      </main>
-    );
-  }
-
-  const { project, summary, title } = presentedProject;
+  const { summary, title } = project;
+  const projectSlug = project.slug;
 
   return (
     <motion.div
@@ -128,9 +111,7 @@ export default function ProjectDetailPage({
             >
               <img
                 data-project-image={projectSlug}
-                className="block h-full w-full object-contain transition-opacity duration-180"
-                style={{ opacity: imageLoaded ? 1 : 0 }}
-                onLoad={() => setImageLoaded(true)}
+                className="block h-full w-full object-contain"
                 src={project.imageSrc}
                 alt={`${title} project preview`}
               />

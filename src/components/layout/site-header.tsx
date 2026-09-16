@@ -9,10 +9,11 @@ import {
 import { ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button, LinkButton } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { portfolioRevealEase } from "@/lib/portfolio-motion";
+import { cn } from "@/lib/utils";
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 const navigationItems = [
   ["About", "about"],
@@ -44,18 +45,14 @@ export default function SiteHeader({
   shouldPlayInitialEntrance,
 }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState(
-    () => window.location.hash.slice(1) || "home",
-  );
+  const [activeSection, setActiveSection] = useState("home");
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const navbarShellRef = useRef<HTMLDivElement>(null);
   const pendingSectionRef = useRef<string | null>(null);
   const navbarRevealCompleteRef = useRef(!shouldPlayInitialEntrance);
   const navbarShellAnimationControls = useAnimationControls();
   const navbarContentAnimationControls = useAnimationControls();
-  const [usesMobileNavbarLayout] = useState(
-    () => window.matchMedia("(max-width: 759.98px)").matches,
-  );
+  const usesMobileNavbarLayout = useMediaQuery("(max-width: 759.98px)");
   const shouldReduceMotion = Boolean(useReducedMotion());
   const navbarRevealDuration = usesMobileNavbarLayout ? 0.44 : 0.54;
   const navbarContentDelay =
@@ -103,6 +100,7 @@ export default function SiteHeader({
       setActiveSection(window.location.hash.slice(1) || "home");
     };
 
+    updateActiveSection();
     window.addEventListener("hashchange", updateActiveSection);
     return () => window.removeEventListener("hashchange", updateActiveSection);
   }, []);
