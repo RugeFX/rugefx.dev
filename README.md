@@ -91,9 +91,14 @@ The project uses strict TypeScript configuration and ESLint for code quality. Al
 
 ### Deployment output
 
-`bun run build` prerenders the homepage and every linked project page. For a
-static host, publish `dist/client`. A server deployment can use the generated
-entry at `dist/server/server.js`.
+`bun run build` prerenders the homepage and every linked project page. The
+default Nitro build is written to `.output`, with public assets under
+`.output/public` and the server entry at `.output/server/index.mjs`.
+
+Vercel deployment is configured by `vercel.json`. Keep the Vercel project on
+the **TanStack Start** framework preset and leave the Output Directory unset so
+Vercel can consume Nitro's Build Output API result. The existing Git production
+branch can remain `main`; each push continues to trigger a production deploy.
 
 ## 📄 License
 

@@ -3,7 +3,8 @@ import react from "@vitejs/plugin-react";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { imagetools } from "vite-imagetools";
-import path from "path";
+import { nitro } from "nitro/vite";
+import { fileURLToPath } from "node:url";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,6 +20,7 @@ export default defineConfig({
         retryDelay: 250,
       },
     }),
+    nitro(),
     react(),
     tailwindcss(),
     imagetools({
@@ -29,7 +31,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
 });
