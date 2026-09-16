@@ -1,8 +1,14 @@
+import { useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { LinkButton } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { getPresentedProject } from "@/lib/project-presentation";
+
+import ProjectDetailPanel from "@/components/projects/project-detail-panel";
+import { projectNavigation } from "@/lib/project-navigation";
+import { portfolioRevealEase } from "@/lib/portfolio-motion";
 
 interface ProjectDetailPageProps {
   projectSlug: string;
@@ -11,6 +17,9 @@ interface ProjectDetailPageProps {
 export default function ProjectDetailPage({
   projectSlug,
 }: ProjectDetailPageProps) {
+  const reduced = Boolean(useReducedMotion());
+  const router = useRouter();
+  const [imageLoaded, setImageLoaded] = useState(false);
   const presentedProject = getPresentedProject(projectSlug);
 
   if (!presentedProject) {
@@ -27,18 +36,50 @@ export default function ProjectDetailPage({
   const { project, summary, title } = presentedProject;
 
   return (
-    <div className="bg-portfolio-canvas text-portfolio-ink [&_a:focus-visible]:outline-portfolio-focus [&_button:focus-visible]:outline-portfolio-focus min-h-screen pb-20 font-sans max-[520px]:pb-10 motion-reduce:[&_*]:animate-none motion-reduce:[&_*]:scroll-auto motion-reduce:[&_*]:transition-none [&_a]:no-underline [&_a:focus-visible]:outline-[3px] [&_a:focus-visible]:outline-offset-[5px] [&_button:focus-visible]:outline-[3px] [&_button:focus-visible]:outline-offset-[5px]">
+    <motion.div
+      initial={reduced ? { opacity: 0 } : false}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.18, ease: portfolioRevealEase }}
+      className="bg-portfolio-canvas text-portfolio-ink [&_a:focus-visible]:outline-portfolio-focus [&_button:focus-visible]:outline-portfolio-focus min-h-screen pb-20 font-sans max-[520px]:pb-10 motion-reduce:[&_*]:animate-none motion-reduce:[&_*]:scroll-auto motion-reduce:[&_*]:transition-none [&_a]:no-underline [&_a:focus-visible]:outline-[3px] [&_a:focus-visible]:outline-offset-[5px] [&_button:focus-visible]:outline-[3px] [&_button:focus-visible]:outline-offset-[5px]"
+    >
       <main className="mx-auto max-w-[1280px] px-8 max-[1120px]:px-6 max-[760px]:px-[18px] max-[480px]:px-[14px]">
-        <nav
+        <motion.nav
+          initial={reduced ? false : { opacity: 0, scale: 0.985 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.26, ease: portfolioRevealEase }}
           className="flex min-h-28 items-center justify-between gap-6 max-[520px]:min-h-[88px]"
           aria-label="Project navigation"
         >
           <Link
-            className="text-portfolio-copy-muted inline-flex items-center gap-[9px] text-sm"
+            className="group/project-back text-portfolio-copy-muted inline-flex items-center gap-[9px] text-sm"
             to="/"
             hash="projects"
+            onClick={(event) => {
+              const origin = projectNavigation.origin;
+              if (
+                event.button !== 0 ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey
+              )
+                return;
+              if (
+                origin?.slug === projectSlug &&
+                router.state.location.state.__TSR_index ===
+                  origin.historyIndex + 1
+              ) {
+                event.preventDefault();
+                router.history.back();
+              }
+            }}
           >
-            <ArrowLeft size={18} /> Back to selected work
+            <ArrowLeft
+              aria-hidden="true"
+              size={18}
+              className="transition-transform duration-150 motion-safe:group-hover/project-back:-translate-x-[3px]"
+            />{" "}
+            Back to selected work
           </Link>
           <Link
             to="/"
@@ -46,10 +87,10 @@ export default function ProjectDetailPage({
           >
             RugeFX
           </Link>
-        </nav>
+        </motion.nav>
 
         <article className="grid grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-5 max-[900px]:grid-cols-1">
-          <header className="bg-portfolio-brand overflow-hidden rounded-[25px] p-[clamp(34px,5vw,60px)] text-white max-[520px]:px-6 max-[520px]:py-[30px]">
+          <ProjectDetailPanel className="bg-portfolio-brand overflow-hidden rounded-[25px] p-[clamp(34px,5vw,60px)] text-white max-[520px]:px-6 max-[520px]:py-[30px]">
             <p className="text-portfolio-on-brand-muted text-sm">
               {project.category}
             </p>
@@ -74,19 +115,28 @@ export default function ProjectDetailPage({
                 </span>
               ))}
             </div>
-          </header>
+          </ProjectDetailPanel>
 
           {project.imageSrc && (
-            <div className="bg-portfolio-tint grid min-h-[540px] place-items-center overflow-hidden rounded-[25px] p-11 max-[900px]:min-h-[460px] max-[520px]:min-h-80 max-[520px]:p-6">
+            <ProjectDetailPanel
+              reveal={false}
+              className="bg-portfolio-tint grid min-h-[540px] place-items-center overflow-hidden rounded-[25px] p-11 max-[900px]:min-h-[460px] max-[520px]:min-h-80 max-[520px]:p-6"
+            >
               <img
-                className="h-full w-full object-contain"
+                data-project-image={projectSlug}
+                className="h-full w-full object-contain transition-opacity duration-180"
+                style={{ opacity: imageLoaded ? 1 : 0 }}
+                onLoad={() => setImageLoaded(true)}
                 src={project.imageSrc}
                 alt={`${title} project preview`}
               />
-            </div>
+            </ProjectDetailPanel>
           )}
 
-          <div className="border-portfolio-border-soft bg-portfolio-surface col-span-full grid grid-cols-[0.65fr_1.35fr] gap-[50px] overflow-hidden rounded-[25px] border p-11 max-[900px]:grid-cols-1 max-[900px]:gap-5 max-[520px]:px-6 max-[520px]:py-[30px]">
+          <ProjectDetailPanel
+            delay={0.07}
+            className="border-portfolio-border-soft bg-portfolio-surface col-span-full grid grid-cols-[0.65fr_1.35fr] gap-[50px] overflow-hidden rounded-[25px] border p-11 max-[900px]:grid-cols-1 max-[900px]:gap-5 max-[520px]:px-6 max-[520px]:py-[30px]"
+          >
             <h2 className="font-display text-[28px] font-semibold tracking-[-1px]">
               About the project
             </h2>
@@ -138,9 +188,9 @@ export default function ProjectDetailPage({
                 </LinkButton>
               )}
             </div>
-          </div>
+          </ProjectDetailPanel>
         </article>
       </main>
-    </div>
+    </motion.div>
   );
 }

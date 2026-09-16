@@ -23,6 +23,8 @@ import { portfolioRevealEase } from "@/lib/portfolio-motion";
 import { cn } from "@/lib/utils";
 import { sectionTitleClass } from "@/components/sections/section-styles";
 
+import { projectNavigation } from "@/lib/project-navigation";
+
 const categories = ["All", "Mobile", "Websites"] as const;
 const projectLayoutTransition = {
   bounce: 0.06,
@@ -41,21 +43,27 @@ const filterCapsuleTransition = {
 };
 
 export default function ProjectsSection() {
-  const [category, setCategory] = useState<(typeof categories)[number]>("All");
+  const [category, setCategory] = useState<(typeof categories)[number]>(
+    projectNavigation.category,
+  );
   const sectionRef = useRef<HTMLElement>(null);
-  const hasEnteredRef = useRef(false);
+  const hasEnteredRef = useRef(projectNavigation.hasRevealedGrid);
   const shouldReduceMotion = Boolean(useReducedMotion());
-  const isInView = useInView(sectionRef, {
+  const enteredViewport = useInView(sectionRef, {
     margin: "0px 0px -12% 0px",
     once: true,
   });
+  const isInView = projectNavigation.hasRevealedGrid || enteredViewport;
   const isInitialEntrance = !hasEnteredRef.current;
   const visibleProjects = presentedProjects.filter(
     ({ project }) => category === "All" || project.category === category,
   );
 
   useEffect(() => {
-    if (isInView) hasEnteredRef.current = true;
+    if (isInView) {
+      hasEnteredRef.current = true;
+      projectNavigation.hasRevealedGrid = true;
+    }
   }, [isInView]);
 
   return (
@@ -68,7 +76,7 @@ export default function ProjectsSection() {
         <motion.div
           animate={{ opacity: isInView ? 1 : 0 }}
           className="mb-7 flex items-center justify-between gap-6 max-[760px]:flex-col max-[760px]:items-start"
-          initial={{ opacity: 0 }}
+          initial={projectNavigation.hasRevealedGrid ? false : { opacity: 0 }}
           transition={{
             duration: shouldReduceMotion ? 0.18 : 0.22,
             ease: portfolioRevealEase,
@@ -90,7 +98,9 @@ export default function ProjectsSection() {
                   selectedCategory as (typeof categories)[number],
                 )
               ) {
-                setCategory(selectedCategory as (typeof categories)[number]);
+                projectNavigation.category =
+                  selectedCategory as (typeof categories)[number];
+                setCategory(projectNavigation.category);
               }
             }}
           >
@@ -281,6 +291,7 @@ function PreviewProject({ project }: PreviewProjectProps) {
         )}
       >
         <img
+          data-project-image={project.slug}
           className={cn(
             "h-full w-full object-cover opacity-0 transition-opacity duration-180",
             imageLoaded && "opacity-100",

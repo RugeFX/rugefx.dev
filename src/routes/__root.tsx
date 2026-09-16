@@ -1,10 +1,20 @@
 import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
+import ProjectImageTransition from "@/components/projects/project-image-transition";
 import { buttonVariants } from "@/components/ui/button-variants";
 
 export const Route = createRootRoute({
-  component: Outlet,
+  component: RootLayout,
   notFoundComponent: NotFoundPage,
 });
+
+function RootLayout() {
+  return (
+    <>
+      <Outlet />
+      <ProjectImageTransition />
+    </>
+  );
+}
 
 function NotFoundPage() {
   return (

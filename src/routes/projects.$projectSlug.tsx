@@ -8,5 +8,5 @@ export const Route = createFileRoute("/projects/$projectSlug")({
 function ProjectRoute() {
   const { projectSlug } = Route.useParams();
 
-  return <ProjectDetailPage projectSlug={projectSlug} />;
+  return <ProjectDetailPage key={projectSlug} projectSlug={projectSlug} />;
 }
