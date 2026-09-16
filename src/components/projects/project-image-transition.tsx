@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "motion/react";
 import { projectNavigation } from "@/lib/project-navigation";
@@ -48,6 +48,21 @@ export default function ProjectImageTransition() {
   const [transition, setTransition] = useState<ImageTransition | null>(null);
   const transitionRef = useRef<ImageTransition | null>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const scrollBehaviorRef = useRef<string | null>(null);
+
+  const suspendSmoothScroll = useCallback(() => {
+    if (scrollBehaviorRef.current !== null) return;
+    const root = document.documentElement;
+    scrollBehaviorRef.current = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+  }, []);
+
+  const restoreSmoothScroll = useCallback(() => {
+    const previousScrollBehavior = scrollBehaviorRef.current;
+    if (previousScrollBehavior === null) return;
+    document.documentElement.style.scrollBehavior = previousScrollBehavior;
+    scrollBehaviorRef.current = null;
+  }, []);
 
   useEffect(() => {
     let raf = 0;
@@ -57,6 +72,7 @@ export default function ProjectImageTransition() {
       clearTimeout(fallback);
       transitionRef.current = null;
       setTransition(null);
+      restoreSmoothScroll();
     };
     const before = router.subscribe("onBeforeLoad", (event) => {
       if (!event.pathChanged) return;
@@ -67,6 +83,10 @@ export default function ProjectImageTransition() {
       const opening = from === "/" && to.startsWith("/projects/");
       const closing = from?.startsWith("/projects/") && to === "/";
       if (!opening && !closing) return clear();
+      // TanStack's scroll restoration runs during this route change. Hold the
+      // root in auto mode before it begins so the destination cannot drift
+      // after its viewport frame has been measured.
+      suspendSmoothScroll();
       const slug = (opening ? to : from)?.split("/")[2];
       if (!slug || (closing && projectNavigation.origin?.slug !== slug))
         return clear();
@@ -103,14 +123,18 @@ export default function ProjectImageTransition() {
         raf = requestAnimationFrame(() => {
           const current = transitionRef.current;
           if (!current) return;
+          const pathname = router.state.location.pathname;
           if (
-            router.state.location.pathname === "/" &&
+            pathname === "/" &&
             projectNavigation.origin?.slug === current.slug
           ) {
             window.scrollTo({
               top: projectNavigation.origin.scrollY,
-              behavior: "instant",
+              left: 0,
+              behavior: "auto",
             });
+          } else if (pathname.startsWith("/projects/")) {
+            window.scrollTo({ top: 0, left: 0, behavior: "auto" });
           }
           const target = document.querySelector<HTMLImageElement>(
             `[data-project-image="${CSS.escape(current.slug)}"]`,
@@ -133,10 +157,11 @@ export default function ProjectImageTransition() {
       rendered();
       cancelAnimationFrame(raf);
       clearTimeout(fallback);
+      restoreSmoothScroll();
       window.removeEventListener("resize", clear);
       window.removeEventListener("wheel", wheel);
     };
-  }, [router, reduced]);
+  }, [reduced, restoreSmoothScroll, router, suspendSmoothScroll]);
 
   if (!transition || reduced) return null;
   return (
@@ -154,9 +179,25 @@ export default function ProjectImageTransition() {
         animate={{ ...transition.to }}
         transition={{ type: "spring", duration: 0.5, bounce: 0.03 }}
         onAnimationComplete={() => {
-          if (!transitionRef.current?.ready) return;
+          const current = transitionRef.current;
+          if (!current?.ready) return;
+          const target = document.querySelector<HTMLImageElement>(
+            `[data-project-image="${CSS.escape(current.slug)}"]`,
+          );
+          // Reveal the real image under the overlay before removing it. Its
+          // normal late-load fade remains available when there is no shared
+          // transition, but it must not create a blank frame at this handoff.
+          if (target?.complete && target.naturalWidth) {
+            target.style.transitionDuration = "0ms";
+          }
           transitionRef.current = null;
           setTransition(null);
+          restoreSmoothScroll();
+          if (target) {
+            requestAnimationFrame(() => {
+              target.style.removeProperty("transition-duration");
+            });
+          }
         }}
       />
     </>

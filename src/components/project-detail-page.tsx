@@ -89,42 +89,46 @@ export default function ProjectDetailPage({
           </Link>
         </motion.nav>
 
-        <article className="grid grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-5 max-[900px]:grid-cols-1">
-          <ProjectDetailPanel className="bg-portfolio-brand overflow-hidden rounded-[25px] p-[clamp(34px,5vw,60px)] text-white max-[520px]:px-6 max-[520px]:py-[30px]">
-            <p className="text-portfolio-on-brand-muted text-sm">
-              {project.category}
-            </p>
-            <h1 className="font-display my-[34px] text-[clamp(54px,7vw,88px)] leading-[0.98] tracking-[-5px] max-[520px]:text-[54px] max-[520px]:tracking-[-3px]">
-              {title}
-            </h1>
-            <h2 className="text-portfolio-on-brand max-w-[24ch] text-[21px] leading-normal font-normal">
-              {summary}
-            </h2>
-            <div
-              className="mt-[42px] flex flex-wrap gap-[9px]"
-              aria-label="Technology stack"
-            >
-              {project.technologies.map((technology) => (
-                <span
-                  className="border-portfolio-brand-outline inline-flex items-center gap-2 rounded-[9px] border px-[11px] py-2 text-xs [&_svg]:h-[15px] [&_svg]:w-[15px] [&_svg]:fill-current"
-                  key={technology.label}
-                  title={technology.label}
-                >
-                  <technology.icon aria-hidden="true" />
-                  {technology.label}
-                </span>
-              ))}
+        <article className="grid grid-cols-1 gap-5">
+          <ProjectDetailPanel className="bg-portfolio-brand grid overflow-hidden rounded-[25px] p-[clamp(34px,5vw,60px)] text-white max-[520px]:px-6 max-[520px]:py-[30px] min-[821px]:grid-cols-[1.05fr_0.95fr] min-[821px]:gap-[clamp(48px,7vw,96px)]">
+            <div>
+              <p className="text-portfolio-on-brand-muted text-sm">
+                {project.category}
+              </p>
+              <h1 className="font-display mt-[34px] text-[clamp(54px,7vw,88px)] leading-[0.98] tracking-[-5px] max-[520px]:text-[54px] max-[520px]:tracking-[-3px]">
+                {title}
+              </h1>
+            </div>
+            <div className="flex flex-col justify-end max-[820px]:mt-10">
+              <h2 className="text-portfolio-on-brand max-w-[24ch] text-[21px] leading-normal font-normal">
+                {summary}
+              </h2>
+              <div
+                className="mt-[42px] flex flex-wrap gap-[9px]"
+                aria-label="Technology stack"
+              >
+                {project.technologies.map((technology) => (
+                  <span
+                    className="border-portfolio-brand-outline inline-flex items-center gap-2 rounded-[9px] border px-[11px] py-2 text-xs [&_svg]:h-[15px] [&_svg]:w-[15px] [&_svg]:fill-current"
+                    key={technology.label}
+                    title={technology.label}
+                  >
+                    <technology.icon aria-hidden="true" />
+                    {technology.label}
+                  </span>
+                ))}
+              </div>
             </div>
           </ProjectDetailPanel>
 
           {project.imageSrc && (
             <ProjectDetailPanel
               reveal={false}
-              className="bg-portfolio-tint grid min-h-[540px] place-items-center overflow-hidden rounded-[25px] p-11 max-[900px]:min-h-[460px] max-[520px]:min-h-80 max-[520px]:p-6"
+              className="border-portfolio-border-soft bg-portfolio-media grid aspect-[2/1] place-items-center overflow-hidden rounded-[25px] border p-[clamp(16px,3vw,36px)]"
             >
               <img
                 data-project-image={projectSlug}
-                className="h-full w-full object-contain transition-opacity duration-180"
+                className="block h-full w-full object-contain transition-opacity duration-180"
                 style={{ opacity: imageLoaded ? 1 : 0 }}
                 onLoad={() => setImageLoaded(true)}
                 src={project.imageSrc}
