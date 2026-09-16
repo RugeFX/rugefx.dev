@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MotionConfig, motion } from "motion/react";
+import { MotionConfig, motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import HeroName from "@/components/hero/hero-name";
 import {
@@ -42,13 +42,11 @@ const stackedHeroDelays = {
 };
 
 interface HeroSectionProps {
-  shouldPlayEntrance: boolean;
-  shouldReduceInitialMotion: boolean;
+  shouldPlayInitialEntrance: boolean;
 }
 
 export default function HeroSection({
-  shouldPlayEntrance,
-  shouldReduceInitialMotion,
+  shouldPlayInitialEntrance,
 }: HeroSectionProps) {
   const [usesStackedHeroLayout] = useState(
     () => window.matchMedia("(max-width: 1120px)").matches,
@@ -60,8 +58,9 @@ export default function HeroSection({
   const aboutCardMagnetism = useMagneticCard();
   const locationCardMagnetism = useMagneticCard(2.5);
   const currentCardMagnetism = useMagneticCard(2.5);
+  const shouldReduceMotion = Boolean(useReducedMotion());
   const shouldAnimateHeroCards =
-    shouldPlayEntrance && !shouldReduceInitialMotion;
+    shouldPlayInitialEntrance && !shouldReduceMotion;
   const heroCardInitial = shouldAnimateHeroCards ? "hidden" : false;
   const baseHeroDelays = usesStackedHeroLayout
     ? stackedHeroDelays
@@ -88,17 +87,17 @@ export default function HeroSection({
         className="grid scroll-mt-6 grid-cols-[1.15fr_1fr] gap-[22px] max-[1120px]:grid-cols-1 max-[760px]:gap-4"
         aria-label="Introduction"
         initial={
-          shouldPlayEntrance && shouldReduceInitialMotion
+          shouldPlayInitialEntrance && shouldReduceMotion
             ? { opacity: 0 }
             : false
         }
         animate={
-          shouldPlayEntrance && shouldReduceInitialMotion
+          shouldPlayInitialEntrance && shouldReduceMotion
             ? { opacity: 1 }
             : undefined
         }
         transition={{
-          delay: shouldPlayEntrance && shouldReduceInitialMotion ? 0.105 : 0,
+          delay: shouldPlayInitialEntrance && shouldReduceMotion ? 0.105 : 0,
           duration: 0.15,
           ease: portfolioRevealEase,
         }}

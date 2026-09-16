@@ -9,32 +9,23 @@ import SiteHeader from "@/components/site-header";
 const portfolioRootClass =
   "bg-portfolio-canvas text-portfolio-ink min-h-screen flow-root font-sans [&_a]:no-underline [&_a:focus-visible]:outline-[3px] [&_a:focus-visible]:outline-offset-[5px] [&_a:focus-visible]:outline-portfolio-focus [&_button:focus-visible]:outline-[3px] [&_button:focus-visible]:outline-offset-[5px] [&_button:focus-visible]:outline-portfolio-focus motion-reduce:[&_*]:scroll-auto motion-reduce:[&_*]:animate-none motion-reduce:[&_*]:transition-none";
 
-let hasPlayedEntrance = false;
+let hasPlayedInitialEntrance = false;
 
 export default function HomePage() {
-  const [shouldPlayEntrance] = useState(() => !hasPlayedEntrance);
-  const [shouldReduceInitialMotion] = useState(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
+  const [shouldPlayInitialEntrance] = useState(() => !hasPlayedInitialEntrance);
 
   useEffect(() => {
-    if (shouldPlayEntrance) {
-      hasPlayedEntrance = true;
+    if (shouldPlayInitialEntrance) {
+      hasPlayedInitialEntrance = true;
     }
-  }, [shouldPlayEntrance]);
+  }, [shouldPlayInitialEntrance]);
 
   return (
     <div className={portfolioRootClass}>
       <div className="mx-auto max-w-[1280px] px-8 max-[1120px]:px-6 max-[760px]:px-[18px] max-[480px]:px-[14px]">
-        <SiteHeader
-          shouldPlayEntrance={shouldPlayEntrance}
-          shouldReduceInitialMotion={shouldReduceInitialMotion}
-        />
+        <SiteHeader shouldPlayInitialEntrance={shouldPlayInitialEntrance} />
         <main>
-          <HeroSection
-            shouldPlayEntrance={shouldPlayEntrance}
-            shouldReduceInitialMotion={shouldReduceInitialMotion}
-          />
+          <HeroSection shouldPlayInitialEntrance={shouldPlayInitialEntrance} />
           <div className="mt-[75px] max-[760px]:mt-[45px]">
             <AboutSection />
           </div>

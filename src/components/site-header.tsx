@@ -37,13 +37,11 @@ const navbarItemVariants: Variants = {
 };
 
 interface SiteHeaderProps {
-  shouldPlayEntrance: boolean;
-  shouldReduceInitialMotion: boolean;
+  shouldPlayInitialEntrance: boolean;
 }
 
 export default function SiteHeader({
-  shouldPlayEntrance,
-  shouldReduceInitialMotion,
+  shouldPlayInitialEntrance,
 }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(
@@ -52,21 +50,21 @@ export default function SiteHeader({
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const navbarShellRef = useRef<HTMLDivElement>(null);
   const pendingSectionRef = useRef<string | null>(null);
-  const navbarRevealCompleteRef = useRef(!shouldPlayEntrance);
+  const navbarRevealCompleteRef = useRef(!shouldPlayInitialEntrance);
   const navbarShellAnimationControls = useAnimationControls();
   const navbarContentAnimationControls = useAnimationControls();
   const [usesMobileNavbarLayout] = useState(
     () => window.matchMedia("(max-width: 759.98px)").matches,
   );
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = Boolean(useReducedMotion());
   const navbarRevealDuration = usesMobileNavbarLayout ? 0.44 : 0.54;
   const navbarContentDelay =
     navbarRevealLeadIn + (usesMobileNavbarLayout ? 0.14 : 0.18);
 
   useEffect(() => {
-    if (!shouldPlayEntrance) return;
+    if (!shouldPlayInitialEntrance) return;
 
-    if (shouldReduceInitialMotion) {
+    if (shouldReduceMotion) {
       void Promise.all([
         navbarShellAnimationControls.start(
           { opacity: 1 },
@@ -96,8 +94,8 @@ export default function SiteHeader({
     navbarContentAnimationControls,
     navbarRevealDuration,
     navbarShellAnimationControls,
-    shouldPlayEntrance,
-    shouldReduceInitialMotion,
+    shouldPlayInitialEntrance,
+    shouldReduceMotion,
   ]);
 
   useEffect(() => {
@@ -175,8 +173,8 @@ export default function SiteHeader({
         )}
         style={{ transformOrigin: "left center" }}
         initial={
-          shouldPlayEntrance
-            ? shouldReduceInitialMotion
+          shouldPlayInitialEntrance
+            ? shouldReduceMotion
               ? { opacity: 0 }
               : { transform: "scaleX(0.055)", opacity: 1 }
             : false
@@ -190,8 +188,8 @@ export default function SiteHeader({
         variants={navbarContentVariants}
         custom={navbarContentDelay}
         initial={
-          shouldPlayEntrance
-            ? shouldReduceInitialMotion
+          shouldPlayInitialEntrance
+            ? shouldReduceMotion
               ? { opacity: 0 }
               : "hidden"
             : false
