@@ -47,10 +47,11 @@ bun run lint
 ```
 src/
 ├── components/
-│   ├── layout/          # Layout components (header, footer, etc.)
+│   ├── hero/            # Hero name, social links, location map, motion variants
+│   ├── layout/          # Layout components (header, footer)
+│   ├── projects/        # Project detail panels and image transition
 │   ├── sections/        # Page sections (hero, about, projects, work experience)
-│   ├── theme/           # Theme toggler component
-│   └── ui/              # Reusable UI components
+│   └── ui/              # Reusable UI components (buttons, toggles, theme toggle)
 ├── contexts/            # React contexts (theme provider)
 ├── content/             # Portfolio content and route slugs
 ├── config/              # Site-wide identity and URL configuration

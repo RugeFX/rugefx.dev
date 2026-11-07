@@ -1,11 +1,11 @@
 import { type VariantProps } from "class-variance-authority";
-import { cn } from "cn";
 import {
   ToggleButton as TogglePrimitive,
   type ToggleButtonProps,
 } from "react-aria-components";
 
 import { toggleVariants } from "@/components/ui/toggle-variants";
+import { cn } from "@/lib/utils";
 
 function Toggle({
   className,

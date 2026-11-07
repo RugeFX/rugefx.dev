@@ -69,7 +69,7 @@ export const workExperiences: WorkExperience[] = [
     description: [
       "Developed the customer-facing Qurban Asyik e-commerce mobile app with React Native and Expo",
       "Integrated product browsing, cart management, authentication, and Midtrans Snap transactions through an OpenAPI-defined backend contract",
-      "Prepared and submitted multiple app versions to the Google Play Store",
+      "Prepared and submitted multiple app versions to the Google Play Store and Apple App Store",
       "Set up Expo Application Services for automated cloud builds and submissions",
       "Built a GitHub Actions pipeline to trigger builds on code changes",
     ],
@@ -216,7 +216,7 @@ export const projects: Project[] = [
       "My personal portfolio website, built with TypeScript, React, TanStack Start, Vite, Tailwind CSS, React Aria Components, shadcn/ui, and Motion.",
     imageSrc: icon,
     siteUrl: null,
-    repositoryUrl: "https://github.com/RugeFX/rugefx.com",
+    repositoryUrl: "https://github.com/RugeFX/rugefx.dev",
     technologies: [
       {
         label: "React",
