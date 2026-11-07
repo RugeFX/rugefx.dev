@@ -1,6 +1,6 @@
 # RugeFX Portfolio
 
-A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS. Features smooth animations, dark/light theme switching, and a clean design showcasing projects and work experience.
+The portfolio of Ahmad Zacky: a playful, hands-on site in RugeFX purple. Peel off and throw the stickers, pull the letters of the name, flip the experience cards, press the skill keycaps, turn on sound effects, and try the Konami code.
 
 ## ✨ Features
 
@@ -18,7 +18,7 @@ A modern, responsive portfolio website built with React, TypeScript, and Tailwin
 - **Framework**: React 19 with TanStack Start and TanStack Router
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS 4 with CSS Variables
-- **UI Components**: React Aria Components and shadcn/ui
+- **Type**: Bricolage Grotesque, Figtree and Caveat
 - **Animations**: Motion for React
 - **Icons**: Lucide React & Simple Icons
 - **Package Manager**: Bun
@@ -47,12 +47,11 @@ bun run lint
 ```
 src/
 ├── components/
-│   ├── hero/            # Hero name, social links, location map, motion variants
-│   ├── layout/          # Layout components (header, footer)
-│   ├── projects/        # Project detail panels and image transition
+│   ├── layout/          # Header and footer
+│   ├── projects/        # Shared project image transition
 │   ├── sections/        # Page sections (hero, about, projects, work experience)
-│   └── ui/              # Reusable UI components (buttons, toggles, theme toggle)
-├── contexts/            # React contexts (theme provider)
+│   └── ui/              # Stickers, bouncy text, section titles, toggles
+├── contexts/            # React contexts (theme, sound, confetti and toasts)
 ├── content/             # Portfolio content and route slugs
 ├── config/              # Site-wide identity and URL configuration
 ├── hooks/               # Custom React hooks
@@ -72,10 +71,11 @@ src/
 
 ## 📱 Sections
 
-- **Hero**: Personal introduction with animated elements
-- **About**: Journey and technology background
-- **Work Experience**: Timeline-based professional history
-- **Projects**: Featured work with live demos and source code
+- **Hero**: Draggable stickers that drift with scroll, and a name whose letters hop and spring back
+- **About**: Marker highlights, a sticky note, a live Bekasi clock, a character sheet, and a keyboard of skills
+- **Work**: Scrapbook polaroids that drop in, get taped down, and fly into the project page
+- **Experience**: Cards dealt from a pile that flip over to show the details
+- **Contact**: Copy-to-clipboard email with confetti, and sticker links
 
 ## 🔧 Development
 
@@ -84,7 +84,6 @@ The project uses strict TypeScript configuration and ESLint for code quality. Al
 ### Key Dependencies
 
 - **Routing and rendering**: TanStack Start with static prerendering
-- **UI**: React Aria Components and shadcn/ui
 - **Styling**: Tailwind CSS with custom configuration
 - **Animation**: Motion for React
 - **Icons**: Lucide React for consistent iconography

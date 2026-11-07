@@ -1,260 +1,361 @@
-import { Fragment, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
-import { ChevronDown, Code2, GraduationCap, UsersRound } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import {
-  magneticCardClass,
-  useMagneticCard,
-} from "@/components/ui/magnetic-card";
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  type Variants,
+} from "motion/react";
+import { Moon, Sun } from "lucide-react";
+import Highlight from "@/components/ui/highlight";
+import { popCardClass } from "@/components/ui/pop-styles";
+import Reveal from "@/components/ui/reveal";
+import SectionTitle from "@/components/ui/section-title";
+import { SITE_LOCATION } from "@/config/site";
+import { usePlayground } from "@/contexts/playground-context";
+import { useLocalTime } from "@/hooks/use-local-time";
 import { cn } from "@/lib/utils";
 
-const primarySkills = [
-  ["React", "React Native", "TypeScript", "Expo", "Laravel", "Node.js"],
-  ["PostgreSQL", "MQTT", "Docker", "GitHub Actions"],
+const characterSheet = [
+  ["Class", "Software engineer"],
+  ["Home base", "Bekasi, West Java, Indonesia"],
+  [
+    "Training",
+    "Computer Science at Cakrawala University, picked for the Talent Scouting program",
+  ],
+  ["Guild", "Deputy Head of Research & Technology, Student Government"],
+  [
+    "Special moves",
+    "Shipping apps to the stores, hooking devices up to dashboards",
+  ],
+] as const;
+
+const mainKeys = [
+  "React",
+  "React Native",
+  "TypeScript",
+  "Expo",
+  "Laravel",
+  "Node.js",
+  "PostgreSQL",
+  "MQTT",
+  "Docker",
+  "GitHub Actions",
 ];
 
-const additionalSkillGroups = [
-  {
-    label: "Languages",
-    items: ["JavaScript", "PHP", "Go", "Python", "Java", "C#", "Rust", "C++"],
-  },
-  {
-    label: "Frameworks & libraries",
-    items: [
-      "Next.js",
-      "Hapi",
-      "Fastify",
-      "NestJS",
-      "Hono",
-      "Tailwind CSS",
-      "Gin",
-      "Fiber",
-      "Axum",
-    ],
-  },
-  {
-    label: "Platforms & tools",
-    items: ["Git", "MongoDB", "Figma", "Vercel", "AWS", "Fly.io"],
-  },
+const extraKeys = [
+  "JavaScript",
+  "PHP",
+  "Go",
+  "Python",
+  "Java",
+  "C#",
+  "Rust",
+  "C++",
+  "Next.js",
+  "NestJS",
+  "Hono",
+  "Fastify",
+  "Hapi",
+  "Gin",
+  "Fiber",
+  "Axum",
+  "Tailwind CSS",
+  "MongoDB",
+  "Git",
+  "Figma",
+  "Vercel",
+  "AWS",
+  "Fly.io",
 ];
 
-const aboutRevealEase: [number, number, number, number] = [0.19, 1, 0.22, 1];
-const aboutRevealViewport = { amount: 0.28, once: true } as const;
+// Every few keys get a coloured keycap, like a custom keyboard.
+const keycapColors = [
+  "bg-surface",
+  "bg-surface",
+  "bg-sun",
+  "bg-surface",
+  "bg-mint",
+  "bg-surface",
+  "bg-sky",
+  "bg-pink",
+];
+
+// Character sheet stats load in one at a time, like a game menu.
+const statVariants: Variants = {
+  hidden: { opacity: 0, x: -24 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { type: "spring", stiffness: 300, damping: 22 },
+  },
+};
 
 export default function AboutSection() {
-  const [skillsOpen, setSkillsOpen] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
-  const profileCardMagnetism = useMagneticCard();
-  const educationCardMagnetism = useMagneticCard(2.5);
-  const communityCardMagnetism = useMagneticCard(2.5);
-  const toolsCardMagnetism = useMagneticCard(2.5);
-  const cardRevealInitial = shouldReduceMotion
-    ? { opacity: 0, transform: "scale(1)" }
-    : { opacity: 0, transform: "scale(0.985)" };
-  const cardRevealVisible = { opacity: 1, transform: "scale(1)" };
-  const getCardRevealTransition = (delay: number) =>
-    shouldReduceMotion
-      ? {
-          opacity: { duration: 0.15, ease: aboutRevealEase },
-          transform: { duration: 0 },
-        }
-      : {
-          opacity: { delay, duration: 0.26, ease: aboutRevealEase },
-          transform: {
-            bounce: 0.06,
-            delay,
-            duration: 0.45,
-            type: "spring" as const,
-          },
-        };
+  const reduced = useReducedMotion();
 
   return (
-    <section id="about" className="scroll-mt-6">
-      <motion.h2
-        className="font-display mb-7 text-[44px] leading-[1.15] font-semibold tracking-[-2px] max-[760px]:mb-6 max-[760px]:text-[35px]"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ amount: 0.5, once: true }}
-        transition={{ duration: 0.22, ease: aboutRevealEase }}
-      >
-        About me
-      </motion.h2>
+    <section
+      id="about"
+      aria-labelledby="about-title"
+      className="mx-auto max-w-7xl scroll-mt-24 px-5 pt-24 md:px-8 md:pt-36"
+    >
+      <SectionTitle id="about-title" note="a little about me" title="About" />
 
-      <div className="grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-5 max-[1120px]:grid-cols-2 max-[760px]:grid-cols-1 max-[760px]:gap-4">
-        <motion.article
-          className={cn(
-            magneticCardClass,
-            "border-portfolio-border bg-portfolio-surface row-span-2 flex min-h-[550px] flex-col rounded-[25px] border p-[clamp(30px,3.5vw,44px)] max-[1120px]:col-span-2 max-[1120px]:row-span-1 max-[1120px]:min-h-[500px] max-[760px]:col-span-1 max-[760px]:min-h-[520px] max-[760px]:p-[30px] max-[480px]:min-h-[540px] max-[480px]:px-6 max-[480px]:py-[26px]",
-          )}
-          data-magnetic-card=""
-          {...profileCardMagnetism}
-          initial={cardRevealInitial}
-          whileInView={cardRevealVisible}
-          viewport={aboutRevealViewport}
-          transition={getCardRevealTransition(0.04)}
-        >
-          <Code2
-            className="border-portfolio-brand text-portfolio-brand-strong h-[42px] w-[42px] shrink-0 rounded-[9px] border-2 [stroke-width:1.8] p-[7px]"
-            aria-hidden="true"
-          />
-          <h3 className="font-display mt-[31px] mb-7 max-w-[12ch] text-[clamp(42px,4.5vw,60px)] leading-[1.08] font-semibold tracking-[-3px] max-[1120px]:max-w-[13ch] max-[760px]:text-[clamp(40px,11vw,52px)] max-[760px]:tracking-[-2.5px] max-[480px]:mt-[27px] max-[480px]:text-[38px] max-[480px]:tracking-[-2px]">
-            From interfaces to{" "}
-            <span className="text-portfolio-brand-strong">
-              connected systems.
-            </span>
-          </h3>
-          <div className="text-portfolio-copy max-w-[48ch] text-lg leading-[1.55] max-[760px]:text-[17px] [&_p+p]:mt-[18px]">
+      <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div className="space-y-6 text-xl leading-relaxed md:text-2xl lg:col-span-7">
+          <Reveal>
             <p>
-              I build web and mobile apps, along with the services and
-              integrations behind them.
+              I&apos;m a primarily self-taught developer who builds{" "}
+              <Highlight accent="sun">web and mobile apps</Highlight>, plus the
+              services and integrations behind them.
             </p>
+          </Reveal>
+          <Reveal delay={0.08}>
             <p>
-              My recent work spans mobile commerce, IoT-connected weighing
-              workflows, and tools that keep operational data moving.
+              Lately that means mobile commerce,{" "}
+              <Highlight accent="mint">
+                IoT-connected weighing workflows
+              </Highlight>
+              , and dashboards that keep operational data moving.
             </p>
-          </div>
-          <p className="text-portfolio-copy before:border-portfolio-divider relative mt-auto max-w-[52ch] pt-[58px] text-base leading-[1.55] before:absolute before:inset-x-0 before:top-[29px] before:border-t">
-            I care about clear APIs, maintainable code, and software that holds
-            up in everyday use.
-          </p>
-        </motion.article>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p>
+              I care about <Highlight accent="sky">clear APIs</Highlight>,
+              maintainable code, and software that holds up in everyday use.
+              Also: good kopi.
+            </p>
+          </Reveal>
+        </div>
 
-        <motion.article
-          className={cn(
-            magneticCardClass,
-            "border-portfolio-border bg-portfolio-tint rounded-[25px] border p-[clamp(30px,3.5vw,44px)] max-[760px]:min-h-[260px] max-[760px]:p-[30px] max-[480px]:px-6 max-[480px]:py-[26px]",
-          )}
-          data-magnetic-card=""
-          {...educationCardMagnetism}
-          initial={cardRevealInitial}
-          whileInView={cardRevealVisible}
-          viewport={aboutRevealViewport}
-          transition={getCardRevealTransition(0.1)}
-        >
-          <div className="mb-[30px] flex items-center gap-[17px] max-[480px]:items-start">
-            <GraduationCap
-              className="text-portfolio-brand-strong h-[38px] w-[38px] shrink-0 [stroke-width:1.8]"
-              aria-hidden="true"
-            />
-            <h3 className="font-display text-[27px] leading-[1.15] font-semibold tracking-[-1px] max-[480px]:text-2xl">
-              Education
-            </h3>
-          </div>
-          <p className="mb-[3px] text-xl leading-[1.4] font-semibold">
-            Computer Science
-          </p>
-          <p className="text-base leading-[1.55]">Cakrawala University</p>
-          <p className="text-portfolio-copy-muted mt-1 text-base leading-[1.55]">
-            Currently pursuing my bachelor&apos;s degree.
-          </p>
-          <p className="border-portfolio-divider-strong mt-5 border-t pt-5 text-base leading-[1.55]">
-            Selected for the university&apos;s Talent Scouting program.
-          </p>
-        </motion.article>
-
-        <motion.article
-          className={cn(
-            magneticCardClass,
-            "border-portfolio-ink-strong bg-portfolio-ink-strong rounded-[25px] border p-[clamp(30px,3.5vw,44px)] text-white max-[760px]:min-h-[260px] max-[760px]:p-[30px] max-[480px]:px-6 max-[480px]:py-[26px]",
-          )}
-          data-magnetic-card=""
-          {...communityCardMagnetism}
-          initial={cardRevealInitial}
-          whileInView={cardRevealVisible}
-          viewport={aboutRevealViewport}
-          transition={getCardRevealTransition(0.16)}
-        >
-          <div className="mb-[27px] flex items-center gap-[17px] max-[480px]:items-start">
-            <UsersRound
-              className="text-portfolio-on-dark-muted h-[38px] w-[38px] shrink-0 [stroke-width:1.8]"
-              aria-hidden="true"
-            />
-            <h3 className="font-display text-[27px] leading-[1.15] font-semibold tracking-[-1px] max-[480px]:text-2xl">
-              Beyond the classroom
-            </h3>
-          </div>
-          <p className="text-portfolio-on-dark mb-[3px] text-xl leading-[1.4] font-semibold">
-            Deputy Head of Research &amp; Technology
-          </p>
-          <p className="text-portfolio-on-dark-muted text-base leading-normal">
-            Student Government Association
-          </p>
-        </motion.article>
+        <div className="grid gap-6 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1">
+          <NowNote />
+          <ClockCard />
+        </div>
       </div>
 
-      <motion.div
-        className={cn(
-          magneticCardClass,
-          "border-portfolio-border bg-portfolio-surface mt-5 rounded-[25px] border px-9 pt-7 pb-[30px] max-[760px]:mt-4 max-[760px]:px-[30px] max-[760px]:py-[27px] max-[480px]:p-6",
-        )}
-        data-magnetic-card=""
-        {...toolsCardMagnetism}
-        initial={cardRevealInitial}
-        whileInView={cardRevealVisible}
-        viewport={aboutRevealViewport}
-        transition={getCardRevealTransition(0.06)}
-      >
-        <div className="mb-[19px] flex items-center justify-between gap-6 max-[480px]:flex-col max-[480px]:items-start max-[480px]:gap-2.5">
-          <h3 className="font-display text-[25px] font-semibold tracking-[-0.8px]">
-            Tools I work with
-          </h3>
-          <Button
-            variant="link"
-            size="sm"
-            type="button"
-            aria-expanded={skillsOpen}
-            aria-controls="full-skill-set"
-            onPress={() => setSkillsOpen((isOpen) => !isOpen)}
+      <div className="mt-12 grid gap-6 lg:grid-cols-12">
+        <Reveal className={cn(popCardClass, "p-6 md:p-8 lg:col-span-5")}>
+          <p className="font-hand text-brand-ink text-2xl">character sheet</p>
+          <motion.dl
+            className="mt-4 space-y-3"
+            variants={keyboardVariants}
+            initial={reduced ? false : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
           >
-            {skillsOpen ? "Hide full skill set" : "Full skill set"}
-            <ChevronDown
-              className={cn(
-                "transition-transform duration-200",
-                skillsOpen && "rotate-180",
-              )}
-              aria-hidden="true"
-            />
-          </Button>
-        </div>
-
-        <div className="text-portfolio-copy text-base leading-[1.8]">
-          {primarySkills.map((line) => (
-            <ul className="flex flex-wrap" key={line.join("-")}>
-              {line.map((skill, index) => (
-                <Fragment key={skill}>
-                  <li className="inline-flex items-center">{skill}</li>
-                  {index < line.length - 1 && (
-                    <li
-                      className="text-portfolio-separator mx-2.5"
-                      aria-hidden="true"
-                    >
-                      ·
-                    </li>
-                  )}
-                </Fragment>
-              ))}
-            </ul>
-          ))}
-        </div>
-
-        {skillsOpen && (
-          <div
-            id="full-skill-set"
-            className="border-portfolio-border mt-[23px] grid grid-cols-3 gap-7 border-t pt-[23px] max-[760px]:grid-cols-1 max-[760px]:gap-5"
-          >
-            {additionalSkillGroups.map((group) => (
-              <div key={group.label}>
-                <h4 className="text-portfolio-brand-strong mb-[7px] text-[13px] font-semibold">
-                  {group.label}
-                </h4>
-                <p className="text-portfolio-copy-muted text-[13px] leading-[1.65]">
-                  {group.items.join(" · ")}
-                </p>
-              </div>
+            {characterSheet.map(([term, detail]) => (
+              <motion.div
+                key={term}
+                variants={statVariants}
+                className="border-line/15 grid grid-cols-[7.5rem_1fr] gap-3 border-t-2 border-dashed pt-3"
+              >
+                <dt className="text-ink-muted text-sm font-bold tracking-wide uppercase">
+                  {term}
+                </dt>
+                <dd className="font-semibold">{detail}</dd>
+              </motion.div>
             ))}
-          </div>
-        )}
-      </motion.div>
+          </motion.dl>
+        </Reveal>
+        <Reveal
+          className={cn(popCardClass, "p-6 md:p-8 lg:col-span-7")}
+          delay={0.1}
+        >
+          <SkillKeyboard />
+        </Reveal>
+      </div>
     </section>
+  );
+}
+
+function NowNote() {
+  const reduced = useReducedMotion();
+
+  return (
+    <motion.div
+      className="bg-sun text-on-accent border-line shadow-pop relative rounded-md border-2 p-6 pt-8"
+      initial={reduced ? false : { rotate: 6, opacity: 0, y: 30 }}
+      whileInView={{ rotate: 2, opacity: 1, y: 0 }}
+      whileHover={reduced ? undefined : { rotate: -1, y: -4 }}
+      viewport={{ once: true, amount: 0.6 }}
+      transition={{ type: "spring", stiffness: 220, damping: 15 }}
+    >
+      <span
+        aria-hidden="true"
+        className="absolute -top-3 left-1/2 h-6 w-24 -translate-x-1/2 -rotate-3 rounded-sm border border-white/60 bg-white/55"
+      />
+      <p className="font-hand text-3xl leading-none">right now:</p>
+      <p className="mt-3 text-lg leading-snug font-semibold">
+        Building operational dashboards at Nauchara that talk to on-site
+        devices, SAP and a warehouse system.
+      </p>
+    </motion.div>
+  );
+}
+
+function ClockCard() {
+  const time = useLocalTime();
+  const hour = time ? Number(time.slice(0, 2)) : 12;
+  const isNight = hour < 6 || hour >= 18;
+  const mood =
+    hour < 6
+      ? "probably asleep. Probably."
+      : hour < 11
+        ? "the kopi is brewing."
+        : hour < 18
+          ? "shipping things."
+          : "debugging something, most likely.";
+
+  return (
+    <Reveal
+      className={cn(
+        "border-line shadow-pop rounded-[28px] border-2 p-6 transition-colors duration-700",
+        isNight ? "bg-brand text-on-brand" : "bg-sky text-on-accent",
+      )}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <p className="text-sm font-bold tracking-wide uppercase opacity-80">
+          Local time in {SITE_LOCATION.city}
+        </p>
+        <motion.span
+          key={isNight ? "moon" : "sun"}
+          initial={{ rotate: -90, scale: 0 }}
+          animate={{ rotate: 0, scale: 1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 14 }}
+        >
+          {isNight ? (
+            <Moon aria-hidden="true" className="size-8 fill-current" />
+          ) : (
+            <Sun aria-hidden="true" className="size-8" />
+          )}
+        </motion.span>
+      </div>
+      <p className="font-display mt-2 text-6xl font-extrabold tracking-tight tabular-nums">
+        {time ? (
+          <>
+            {time.slice(0, 2)}
+            <span className="animate-blink">:</span>
+            {time.slice(3, 5)}
+          </>
+        ) : (
+          "--:--"
+        )}
+        <span className="ml-2 text-xl">{SITE_LOCATION.timeZoneLabel}</span>
+      </p>
+      <p className="font-hand mt-1 text-2xl">
+        {time ? `Right now I'm ${mood}` : "Checking the clock…"}
+      </p>
+    </Reveal>
+  );
+}
+
+// The keyboard "types itself in" when it scrolls into view.
+const keyboardVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.05, delayChildren: 0.2 } },
+};
+const keyVariants: Variants = {
+  hidden: { opacity: 0, y: -16, scale: 0.6 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: "spring", stiffness: 500, damping: 18 },
+  },
+};
+const keycapClass =
+  "border-line font-display rounded-xl border-2 px-3.5 py-2 text-sm font-bold shadow-[0_5px_0_0_var(--color-line)] transition-[translate,box-shadow] duration-100 hover:-translate-y-0.5 hover:shadow-[0_7px_0_0_var(--color-line)] active:translate-y-1 active:shadow-[0_1px_0_0_var(--color-line)]";
+
+function SkillKeyboard() {
+  const [expanded, setExpanded] = useState(false);
+  const reduced = useReducedMotion();
+  const { play } = usePlayground();
+  const count = mainKeys.length + (expanded ? extraKeys.length : 0);
+
+  return (
+    <>
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <p className="font-hand text-brand-ink text-2xl">
+          my inventory. Press the keys!
+        </p>
+        <p className="text-ink-muted text-sm font-semibold">
+          {count} items equipped
+        </p>
+      </div>
+      <motion.ul
+        className="mt-5 flex flex-wrap gap-x-2.5 gap-y-3.5"
+        variants={keyboardVariants}
+        initial={reduced ? false : "hidden"}
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.4 }}
+      >
+        {mainKeys.map((key, index) => (
+          <motion.li key={key} layout variants={keyVariants}>
+            <Keycap label={key} index={index} />
+          </motion.li>
+        ))}
+        <AnimatePresence initial={false}>
+          {expanded &&
+            extraKeys.map((key, index) => (
+              <motion.li
+                key={key}
+                layout
+                initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 22,
+                  delay: index * 0.02,
+                }}
+              >
+                <Keycap label={key} index={mainKeys.length + index} />
+              </motion.li>
+            ))}
+        </AnimatePresence>
+        <motion.li layout variants={keyVariants}>
+          <button
+            type="button"
+            aria-expanded={expanded}
+            onClick={() => {
+              setExpanded((open) => !open);
+              play("click");
+            }}
+            className={cn(keycapClass, "bg-brand text-on-brand")}
+          >
+            {expanded ? "Fewer keys" : `+${extraKeys.length} more`}
+          </button>
+        </motion.li>
+      </motion.ul>
+    </>
+  );
+}
+
+interface KeycapProps {
+  label: string;
+  index: number;
+}
+
+function Keycap({ label, index }: KeycapProps) {
+  const { play, burstFrom } = usePlayground();
+  const color = keycapColors[index % keycapColors.length];
+
+  return (
+    <button
+      type="button"
+      onClick={(event) => {
+        play("key");
+        burstFrom(event.currentTarget, 8);
+      }}
+      className={cn(
+        keycapClass,
+        color,
+        color === "bg-surface" ? "text-ink" : "text-on-accent",
+      )}
+    >
+      {label}
+    </button>
   );
 }

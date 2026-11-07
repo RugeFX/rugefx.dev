@@ -209,11 +209,11 @@ export const projects: Project[] = [
     title: "RugeFX",
     summary: "The portfolio you are exploring now.",
     seoDescription:
-      "See how the RugeFX portfolio was built with React, TanStack Router, Tailwind CSS, shadcn/ui, and Motion.",
+      "See how the RugeFX portfolio was built with React, TanStack Start, Tailwind CSS, and Motion.",
     socialImage: "/og/rugefx.jpg",
     category: "Websites",
     description:
-      "My personal portfolio website, built with TypeScript, React, TanStack Start, Vite, Tailwind CSS, React Aria Components, shadcn/ui, and Motion.",
+      "My personal portfolio website, designed like a technical spec sheet. Built with TypeScript, React, TanStack Start, Vite, Tailwind CSS, and Motion, with variable-font type that bends under the cursor.",
     imageSrc: icon,
     siteUrl: null,
     repositoryUrl: "https://github.com/RugeFX/rugefx.dev",
@@ -229,10 +229,6 @@ export const projects: Project[] = [
       {
         label: "Tailwind",
         icon: SiTailwindcss,
-      },
-      {
-        label: "Shadcn/ui",
-        icon: SiShadcnui,
       },
       {
         label: "Framer Motion",

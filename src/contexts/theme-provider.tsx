@@ -14,7 +14,7 @@ interface ThemeProviderProps {
 
 const themeStorageKey = "rugefx-theme";
 const themeColors: Record<Theme, string> = {
-  light: "#f8f7fb",
+  light: "#faf7ff",
   dark: "#120c1a",
 };
 

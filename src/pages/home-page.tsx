@@ -1,39 +1,62 @@
-import { useEffect, useState } from "react";
+import SiteFooter from "@/components/layout/site-footer";
 import AboutSection from "@/components/sections/about-section";
 import ExperienceSection from "@/components/sections/experience-section";
 import HeroSection from "@/components/sections/hero-section";
-import ProjectsSection from "@/components/sections/projects-section";
-import SiteFooter from "@/components/layout/site-footer";
-import SiteHeader from "@/components/layout/site-header";
-
-const portfolioRootClass =
-  "bg-portfolio-canvas text-portfolio-ink min-h-screen flow-root font-sans [&_a]:no-underline [&_a:focus-visible]:outline-[3px] [&_a:focus-visible]:outline-offset-[5px] [&_a:focus-visible]:outline-portfolio-focus [&_button:focus-visible]:outline-[3px] [&_button:focus-visible]:outline-offset-[5px] [&_button:focus-visible]:outline-portfolio-focus motion-reduce:[&_*]:scroll-auto motion-reduce:[&_*]:animate-none motion-reduce:[&_*]:transition-none";
-
-let hasPlayedInitialEntrance = false;
+import WorkSection from "@/components/sections/work-section";
+import ScrollRibbons from "@/components/ui/scroll-ribbons";
+import { usePlayground } from "@/contexts/playground-context";
+import { useKonami } from "@/hooks/use-konami";
 
 export default function HomePage() {
-  const [shouldPlayInitialEntrance] = useState(() => !hasPlayedInitialEntrance);
+  const { play, rain, toast } = usePlayground();
 
-  useEffect(() => {
-    if (shouldPlayInitialEntrance) {
-      hasPlayedInitialEntrance = true;
-    }
-  }, [shouldPlayInitialEntrance]);
+  useKonami(() => {
+    rain();
+    play("tada");
+    toast("Cheat code accepted. +30 lives!");
+  });
 
   return (
-    <div className={portfolioRootClass}>
-      <div className="mx-auto max-w-[1280px] px-8 max-[1120px]:px-6 max-[760px]:px-[18px] max-[480px]:px-[14px]">
-        <SiteHeader shouldPlayInitialEntrance={shouldPlayInitialEntrance} />
-        <main>
-          <HeroSection shouldPlayInitialEntrance={shouldPlayInitialEntrance} />
-          <div className="mt-[75px] max-[760px]:mt-[45px]">
-            <AboutSection />
-          </div>
-          <ExperienceSection />
-          <ProjectsSection />
-        </main>
-        <SiteFooter />
-      </div>
-    </div>
+    <>
+      <main>
+        <HeroSection />
+        <ScrollRibbons
+          bands={[
+            {
+              words: [
+                "React",
+                "React Native",
+                "TypeScript",
+                "Laravel",
+                "Next.js",
+                "Docker",
+                "Expo",
+              ],
+              accent: "brand",
+              tilt: -3,
+            },
+            {
+              words: ["web", "mobile", "IoT", "dashboards", "APIs", "kopi"],
+              accent: "sun",
+              tilt: 2.5,
+              reverse: true,
+            },
+          ]}
+        />
+        <AboutSection />
+        <WorkSection />
+        <ExperienceSection />
+        <ScrollRibbons
+          bands={[
+            {
+              words: ["say halo", "ideas welcome", "Bekasi → anywhere"],
+              accent: "mint",
+              tilt: -2,
+            },
+          ]}
+        />
+      </main>
+      <SiteFooter />
+    </>
   );
 }

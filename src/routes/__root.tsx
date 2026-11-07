@@ -6,10 +6,13 @@ import {
   Scripts,
   createRootRoute,
 } from "@tanstack/react-router";
+import SiteHeader from "@/components/layout/site-header";
 import ProjectImageTransition from "@/components/projects/project-image-transition";
-import { buttonVariants } from "@/components/ui/button-variants";
-import { SITE_AUTHOR, SITE_NAME } from "@/config/site";
+import { popButtonClass } from "@/components/ui/pop-styles";
+import { FONT_STYLESHEET_URL, SITE_AUTHOR, SITE_NAME } from "@/config/site";
+import { PlaygroundProvider } from "@/contexts/playground-provider";
 import { ThemeProvider } from "@/contexts/theme-provider";
+import { cn } from "@/lib/utils";
 import "@/index.css";
 
 const themeBootstrap = `
@@ -26,7 +29,7 @@ const themeBootstrap = `
     document.documentElement.style.colorScheme = theme;
     document.querySelector('meta[name="theme-color"]')?.setAttribute(
       "content",
-      theme === "dark" ? "#120c1a" : "#f8f7fb",
+      theme === "dark" ? "#120c1a" : "#faf7ff",
     );
   } catch {
     document.documentElement.dataset.theme = "light";
@@ -42,7 +45,7 @@ export const Route = createRootRoute({
         name: "viewport",
         content: "width=device-width, initial-scale=1.0",
       },
-      { name: "theme-color", content: "#f8f7fb" },
+      { name: "theme-color", content: "#faf7ff" },
       { name: "author", content: SITE_AUTHOR },
       { name: "robots", content: "index, follow" },
       { title: `${SITE_NAME} — ${SITE_AUTHOR}` },
@@ -55,6 +58,7 @@ export const Route = createRootRoute({
         href: "https://fonts.gstatic.com",
         crossOrigin: "anonymous",
       },
+      { rel: "stylesheet", href: FONT_STYLESHEET_URL },
     ],
   }),
   component: RootComponent,
@@ -65,8 +69,11 @@ function RootComponent() {
   return (
     <RootDocument>
       <ThemeProvider>
-        <Outlet />
-        <ProjectImageTransition />
+        <PlaygroundProvider>
+          <SiteHeader />
+          <Outlet />
+          <ProjectImageTransition />
+        </PlaygroundProvider>
       </ThemeProvider>
     </RootDocument>
   );
@@ -89,24 +96,20 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 
 function NotFoundPage() {
   return (
-    <main className="bg-portfolio-canvas text-portfolio-ink grid min-h-screen place-items-center px-6">
-      <div className="text-center">
-        <h1 className="font-display text-5xl font-semibold tracking-tight">
-          Page not found.
-        </h1>
-        <p className="text-portfolio-copy-muted mt-4">
-          The page you’re looking for doesn’t exist.
-        </p>
-        <Link
-          to="/"
-          className={buttonVariants({
-            variant: "default",
-            className: "mt-8",
-          })}
-        >
-          Return home
-        </Link>
-      </div>
+    <main className="flex min-h-svh flex-col items-center justify-center px-5 text-center">
+      <p className="font-hand text-ink-muted text-3xl">uh oh…</p>
+      <h1 className="font-display text-[clamp(96px,22vw,280px)] leading-none font-extrabold tracking-[-0.05em]">
+        4<span className="text-brand inline-block -rotate-12">0</span>4
+      </h1>
+      <p className="text-ink-soft mt-2 text-xl">
+        This page wandered off. It happens to the best of us.
+      </p>
+      <Link
+        to="/"
+        className={cn(popButtonClass, "bg-brand text-on-brand mt-8")}
+      >
+        Take me home
+      </Link>
     </main>
   );
 }

@@ -1,303 +1,171 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Space+Grotesk:wght@300..700&display=swap")
-layer(base);
-
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+
 @theme {
-  --font-sans: Inter, sans-serif;
-  --font-display: Space Grotesk, sans-serif;
+  --font-sans: Figtree, ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", Figtree, ui-sans-serif, sans-serif;
+  --font-hand: Caveat, "Comic Sans MS", cursive;
 
-  --color-portfolio-canvas: #f8f7fb;
-  --color-portfolio-surface: #ffffff;
-  --color-portfolio-ink: #21172f;
-  --color-portfolio-ink-strong: #21142f;
-  --color-portfolio-brand: #7c3aed;
-  --color-portfolio-brand-strong: #7132dc;
-  --color-portfolio-brand-deep: #6423c9;
-  --color-portfolio-tint: #ede7fa;
-  --color-portfolio-tint-soft: #f0e9fb;
-  --color-portfolio-tint-active: #eae1f9;
-  --color-portfolio-media: #edf2e9;
-  --color-portfolio-border-soft: #eae6ef;
-  --color-portfolio-border: #e5deeb;
-  --color-portfolio-divider: #ddd4e5;
-  --color-portfolio-divider-strong: #cfc2e2;
-  --color-portfolio-border-hover: #cdb8ef;
-  --color-portfolio-brand-outline: #c4a4ff;
-  --color-portfolio-copy: #44394f;
-  --color-portfolio-copy-muted: #675d73;
-  --color-portfolio-copy-subtle: #776a83;
-  --color-portfolio-separator: #9b8da9;
-  --color-portfolio-on-brand: #f1e9ff;
-  --color-portfolio-on-brand-muted: #e6d6ff;
-  --color-portfolio-on-dark: #f7f2ff;
-  --color-portfolio-on-dark-muted: #d8cbed;
-  --color-portfolio-on-dark-accent: #d3b4ff;
-  --color-portfolio-focus: #a78bfa;
-  --color-portfolio-map-shadow: #bda4e5;
-  --color-portfolio-map-fill: #7c3aed;
-  --color-portfolio-map-marker: #7c3aed;
-  --color-portfolio-hero-name-face-light: #ffffff;
-  --color-portfolio-hero-name-face-dark: #21142f;
-  --color-portfolio-hero-name-extrusion: #4c1d95;
-  --color-portfolio-hero-name-outline: #e6d6ff;
-  --color-portfolio-theme-toggle: rgb(255 255 255 / 16%);
-  --color-portfolio-theme-toggle-hover: rgb(255 255 255 / 24%);
-  --color-portfolio-theme-toggle-border: rgb(255 255 255 / 46%);
-  --color-portfolio-theme-toggle-thumb: #ffffff;
-  --color-portfolio-theme-toggle-icon-active: #431879;
-  --color-portfolio-theme-toggle-icon-inactive: #ffffff;
-  --color-portfolio-stack-border: #d9cce6;
-  --color-portfolio-stack-line: rgb(91 63 117 / 18%);
-  --color-portfolio-stack-line-strong: rgb(91 63 117 / 22%);
-  --color-portfolio-footer-line: rgb(255 255 255 / 25%);
-  --shadow-portfolio-card: 0 18px 42px rgb(53 31 80 / 9%);
-  --shadow-portfolio-stack: 0 16px 38px rgb(42 24 62 / 8%);
-  --shadow-portfolio-timeline-dot: 0 0 0 5px var(--color-portfolio-canvas);
-  --animate-location-pulse: location-pulse 2.4s cubic-bezier(0.19, 1, 0.22, 1)
-    infinite;
+  --color-canvas: #faf7ff;
+  --color-surface: #ffffff;
+  --color-ink: #21172f;
+  --color-ink-soft: #44394f;
+  --color-ink-muted: #675d73;
+  --color-line: #21172f;
 
-  @keyframes location-pulse {
+  /* The RugeFX purple stays the primary brand colour. */
+  --color-brand: #7c3aed;
+  --color-brand-ink: #6423c9;
+  --color-brand-tint: #ede7fa;
+  --color-on-brand: #ffffff;
+
+  /* Supporting sticker colours; text on them is always dark. */
+  --color-on-accent: #21172f;
+  --color-sun: #ffc83d;
+  --color-mint: #43d9a0;
+  --color-sky: #6cc7ff;
+  --color-tomato: #ff7a59;
+  --color-pink: #ff9fcf;
+
+  --shadow-pop: 4px 4px 0 0 var(--color-line);
+  --shadow-pop-lg: 8px 8px 0 0 var(--color-line);
+  --shadow-sticker: 0 10px 20px -8px rgb(33 23 47 / 40%);
+
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-wave: wave 2.6s ease-in-out infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 1.8s ease-out infinite;
+  --animate-blink: blink 1s steps(1) infinite;
+
+  @keyframes wave {
     0%,
-    28% {
-      opacity: 0.45;
-      transform: scale(0.85);
-    }
-
-    75%,
+    60%,
     100% {
-      opacity: 0;
-      transform: scale(2.5);
+      transform: rotate(0deg);
+    }
+    10%,
+    30% {
+      transform: rotate(16deg);
+    }
+    20%,
+    40% {
+      transform: rotate(-10deg);
     }
   }
 
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-}
-
-@custom-variant short-viewport {
-  @media (max-height: 700px) {
-    @slot;
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-14px) rotate(8deg);
+    }
   }
-}
 
-@utility grid-areas-experience {
-  grid-template-areas:
-    "lead details"
-    "tech details"
-    "hint hint";
-}
-
-@utility grid-areas-experience-single {
-  grid-template-areas:
-    "lead"
-    "details"
-    "tech"
-    "hint";
-}
-
-@utility grid-area-lead {
-  grid-area: lead;
-}
-
-@utility grid-area-details {
-  grid-area: details;
-}
-
-@utility grid-area-tech {
-  grid-area: tech;
-}
-
-@utility grid-area-hint {
-  grid-area: hint;
-}
-
-@utility mask-experience-rail {
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    black calc(100% - 88px),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    black calc(100% - 88px),
-    transparent 100%
-  );
-}
-
-@utility container {
-  margin-inline: auto;
-  padding-inline: 2rem;
-  @media (width >= --theme(--breakpoint-sm)) {
-    max-width: none;
+  @keyframes pulse-ring {
+    0% {
+      box-shadow: 0 0 0 0 rgb(67 217 160 / 70%);
+    }
+    100% {
+      box-shadow: 0 0 0 10px rgb(67 217 160 / 0%);
+    }
   }
-  @media (width >= 1400px) {
-    max-width: 1400px;
-  }
-}
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-}
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 98%;
-    --card-foreground: 224 71.4% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 262.1 83.3% 95%;
-    --accent-foreground: 262.1 83.3% 20%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 262.1 83.3% 57.8%;
-    --radius: 0.75rem;
-    --portfolio-map-opacity: 0.2;
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
   }
 }
 
 :root[data-theme="dark"] {
-  --color-portfolio-canvas: #120c1a;
-  --color-portfolio-surface: #1b1326;
-  --color-portfolio-ink: #f7f2ff;
-  --color-portfolio-ink-strong: #0c0713;
-  --color-portfolio-brand: #6423c9;
-  --color-portfolio-brand-strong: #a978ff;
-  --color-portfolio-brand-deep: #c4a4ff;
-  --color-portfolio-tint: #2a1b3c;
-  --color-portfolio-tint-soft: #251833;
-  --color-portfolio-tint-active: #332247;
-  --color-portfolio-media: #18201a;
-  --color-portfolio-border-soft: #2d2239;
-  --color-portfolio-border: #392a49;
-  --color-portfolio-divider: #49375c;
-  --color-portfolio-divider-strong: #58416f;
-  --color-portfolio-border-hover: #76539b;
-  --color-portfolio-brand-outline: #a97df0;
-  --color-portfolio-copy: #dcd2e6;
-  --color-portfolio-copy-muted: #b9abc6;
-  --color-portfolio-copy-subtle: #aa99b8;
-  --color-portfolio-separator: #806f8f;
-  --color-portfolio-on-brand: #f2eaff;
-  --color-portfolio-on-brand-muted: #dfcefa;
-  --color-portfolio-on-dark: #f7f2ff;
-  --color-portfolio-on-dark-muted: #cdbde0;
-  --color-portfolio-on-dark-accent: #cda9ff;
-  --color-portfolio-focus: #c4a4ff;
-  --color-portfolio-map-shadow: #432d5c;
-  --color-portfolio-map-fill: #c4a4ff;
-  --color-portfolio-map-marker: #c4a4ff;
-  --color-portfolio-hero-name-extrusion: #d7c1ff;
-  --color-portfolio-hero-name-outline: #eee5ff;
-  --color-portfolio-theme-toggle: rgb(20 10 34 / 40%);
-  --color-portfolio-theme-toggle-hover: rgb(20 10 34 / 54%);
-  --color-portfolio-theme-toggle-border: rgb(235 221 255 / 42%);
-  --color-portfolio-theme-toggle-thumb: #eadcff;
-  --color-portfolio-theme-toggle-icon-active: #251334;
-  --color-portfolio-theme-toggle-icon-inactive: #d7c1ff;
-  --color-portfolio-stack-border: #40304f;
-  --color-portfolio-stack-line: rgb(235 221 255 / 15%);
-  --color-portfolio-stack-line-strong: rgb(235 221 255 / 20%);
-  --color-portfolio-footer-line: rgb(255 255 255 / 22%);
-  --shadow-portfolio-card: 0 18px 42px rgb(0 0 0 / 24%);
-  --shadow-portfolio-stack: 0 16px 38px rgb(0 0 0 / 22%);
-  --background: 270 37% 7%;
-  --foreground: 273 100% 97%;
-  --card: 273 33% 11%;
-  --card-foreground: 273 100% 97%;
-  --popover: 273 33% 11%;
-  --popover-foreground: 273 100% 97%;
-  --secondary: 273 28% 17%;
-  --secondary-foreground: 273 100% 97%;
-  --muted: 273 28% 17%;
-  --muted-foreground: 274 14% 69%;
-  --accent: 269 35% 20%;
-  --accent-foreground: 267 100% 88%;
-  --border: 273 20% 23%;
-  --input: 273 20% 23%;
-  --ring: 265 91% 76%;
-  --portfolio-map-opacity: 0.35;
+  --color-canvas: #120c1a;
+  --color-surface: #1d1429;
+  --color-ink: #f7f2ff;
+  --color-ink-soft: #dcd2e6;
+  --color-ink-muted: #b9abc6;
+  --color-line: #e6d6ff;
+  --color-brand: #7c3aed;
+  --color-brand-ink: #c4a4ff;
+  --color-brand-tint: #2a1b3c;
+  --shadow-sticker: 0 10px 20px -8px rgb(0 0 0 / 65%);
+}
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@custom-variant hover-device {
+  @media (hover: hover) and (pointer: fine) {
+    @slot;
+  }
+}
+
+/* A chunky, pressable surface: lifts on hover, squashes on press. */
+@utility pop-press {
+  box-shadow: var(--shadow-pop);
+  transition:
+    translate 180ms var(--ease-spring),
+    box-shadow 180ms var(--ease-spring),
+    background-color 150ms ease-out,
+    color 150ms ease-out;
+
+  &:hover {
+    translate: -2px -2px;
+    box-shadow: 6px 6px 0 0 var(--color-line);
+  }
+
+  &:active {
+    translate: 3px 3px;
+    box-shadow: 1px 1px 0 0 var(--color-line);
+    transition-duration: 60ms;
+  }
+}
+
+@utility backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 @layer base {
-  * {
-    @apply border-border;
+  html {
+    @apply bg-canvas text-ink scroll-smooth font-sans antialiased transition-colors duration-300;
+    /* Tilted cards and thrown stickers must never widen the page. */
+    overflow-x: clip;
   }
+
   body {
-    @apply bg-portfolio-canvas text-foreground;
+    @apply bg-canvas min-h-full overflow-x-clip overscroll-y-none;
+    background-image: radial-gradient(
+      color-mix(in oklab, var(--color-brand) 22%, transparent) 1.2px,
+      transparent 1.2px
+    );
+    background-size: 24px 24px;
   }
-  html,
-  body,
-  #root {
-    @apply bg-portfolio-canvas min-h-full transition-colors duration-200;
+
+  ::selection {
+    @apply bg-brand text-on-brand;
   }
-  html,
-  body {
-    @apply overscroll-y-none scroll-smooth;
+
+  :focus-visible {
+    @apply outline-brand outline-[3px] outline-offset-4;
   }
-  @media (prefers-reduced-motion: reduce) {
-    html,
-    body {
-      scroll-behavior: auto;
-    }
-  }
+
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

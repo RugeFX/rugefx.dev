@@ -14,18 +14,21 @@
 - **Imports**: Use `@/` path alias for src imports, grouped after third-party imports
 - **Formatting**: Prettier with Tailwind plugin, 2-space indentation
 - **Types**: Strict TypeScript, explicit interfaces, no unused locals/parameters
-- **Components**: Function components with `ref` passed as a prop (React 19, no `forwardRef`); keep cva variants in separate `*-variants.ts` files
+- **Components**: Function components with `ref` passed as a prop (React 19, no `forwardRef`)
 - **Naming**: PascalCase components, camelCase functions/variables, kebab-case file names
-- **Styling**: Tailwind CSS 4 with `portfolio-*` theme tokens and `cn()` from `@/lib/utils`
-- **Motion**: Respect reduced motion (`useReducedMotion`, `motion-reduce:` variants)
+- **Styling**: Tailwind CSS 4 with the theme tokens in `src/index.css` (`canvas`/`surface`/`ink`/`line`, the RugeFX purple `brand`, and the `sun`/`mint`/`sky`/`tomato`/`pink` accents), the `pop-press` utility, shared class strings in `components/ui/pop-styles.ts`, and `cn()` from `@/lib/utils`
+- **Type**: Bricolage Grotesque (`font-display`) for headings, Figtree for body, Caveat (`font-hand`) for handwritten notes
+- **Brand**: The logo is `components/ui/logo-mark.tsx` (also `public/icon.svg`); keep them in sync
+- **Playground**: Sound effects, confetti and toasts come from `usePlayground()`; sound is off until the visitor turns it on
+- **Motion**: Respect reduced motion (`useReducedMotion`, `motion-reduce:` variants); never render different markup based on it, or hydration breaks
 - **Error Handling**: Throw descriptive errors for context misuse
 
 ## Architecture
 
 - React 19 + TypeScript + TanStack Start/Router + Vite + Tailwind CSS 4, deployed to Vercel via Nitro
 - Routes in `src/routes` are prerendered; page compositions live in `src/pages`
-- Component library: React Aria Components primitives with shadcn-style custom styling
+- Design: playful and tactile: draggable stickers, bouncy letters, flip cards, clickable keycaps; `SiteHeader` and `PlaygroundProvider` are rendered in the root route
 - Content: portfolio data in `src/content/portfolio.ts`; project slugs in `src/content/project-slugs.ts` (also drives the sitemap)
 - State: React Context for themes, hooks for reusable logic
 - Icons: Lucide React and Simple Icons; animations: Motion (`motion/react`)
-- File structure: `components/ui` for reusable primitives, `components/sections` for page sections, `components/hero`, `components/projects`, and `components/layout` for feature-specific pieces
+- File structure: `components/ui` for reusable primitives, `components/sections` for page sections, `components/layout` for the header and footer, `components/projects` for the shared project image transition
