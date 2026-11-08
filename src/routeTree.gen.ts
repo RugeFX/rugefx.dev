@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiGithubContributionsRouteImport } from './routes/api/github-contributions'
 import { Route as ProjectsProjectSlugRouteImport } from './routes/projects.$projectSlug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGithubContributionsRoute = ApiGithubContributionsRouteImport.update({
+  id: '/api/github-contributions',
+  path: '/api/github-contributions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsProjectSlugRoute = ProjectsProjectSlugRouteImport.update({
@@ -25,27 +31,31 @@ const ProjectsProjectSlugRoute = ProjectsProjectSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/github-contributions': typeof ApiGithubContributionsRoute
   '/projects/$projectSlug': typeof ProjectsProjectSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/github-contributions': typeof ApiGithubContributionsRoute
   '/projects/$projectSlug': typeof ProjectsProjectSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/github-contributions': typeof ApiGithubContributionsRoute
   '/projects/$projectSlug': typeof ProjectsProjectSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/projects/$projectSlug'
+  fullPaths: '/' | '/api/github-contributions' | '/projects/$projectSlug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/projects/$projectSlug'
-  id: '__root__' | '/' | '/projects/$projectSlug'
+  to: '/' | '/api/github-contributions' | '/projects/$projectSlug'
+  id: '__root__' | '/' | '/api/github-contributions' | '/projects/$projectSlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiGithubContributionsRoute: typeof ApiGithubContributionsRoute
   ProjectsProjectSlugRoute: typeof ProjectsProjectSlugRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/github-contributions': {
+      id: '/api/github-contributions'
+      path: '/api/github-contributions'
+      fullPath: '/api/github-contributions'
+      preLoaderRoute: typeof ApiGithubContributionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects/$projectSlug': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiGithubContributionsRoute: ApiGithubContributionsRoute,
   ProjectsProjectSlugRoute: ProjectsProjectSlugRoute,
 }
 export const routeTree = rootRouteImport

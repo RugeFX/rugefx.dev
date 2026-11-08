@@ -1,16 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: Figtree, ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bricolage Grotesque", Figtree, ui-sans-serif, sans-serif;
-  --font-hand: Caveat, "Comic Sans MS", cursive;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+  --font-pixel: "Pixelify Sans", "IBM Plex Mono", ui-monospace, monospace;
 
-  --color-canvas: #faf7ff;
-  --color-surface: #ffffff;
-  --color-ink: #21172f;
-  --color-ink-soft: #44394f;
-  --color-ink-muted: #675d73;
-  --color-line: #21172f;
+  /* Window chrome: a lilac take on the classic grey bevelled face. */
+  --color-face: #d6d0e2;
+  --color-face-lt: #ece8f3;
+  --color-face-hi: #ffffff;
+  --color-face-lo: #8d84a0;
+  --color-face-dk: #241c2e;
+  --color-field: #ffffff;
+
+  --color-ink: #1d1626;
+  --color-ink-soft: #463d53;
+  --color-ink-muted: #6b6279;
 
   /* The RugeFX purple stays the primary brand colour. */
   --color-brand: #7c3aed;
@@ -18,57 +23,40 @@
   --color-brand-tint: #ede7fa;
   --color-on-brand: #ffffff;
 
-  /* Supporting sticker colours; text on them is always dark. */
-  --color-on-accent: #21172f;
+  --color-title-a: #3b1580;
+  --color-title-b: #9b6cf6;
+  --color-title-off-a: #8a8297;
+  --color-title-off-b: #bab3c6;
+
+  --color-on-accent: #1d1626;
   --color-sun: #ffc83d;
   --color-mint: #43d9a0;
   --color-sky: #6cc7ff;
   --color-tomato: #ff7a59;
   --color-pink: #ff9fcf;
 
-  --shadow-pop: 4px 4px 0 0 var(--color-line);
-  --shadow-pop-lg: 8px 8px 0 0 var(--color-line);
-  --shadow-sticker: 0 10px 20px -8px rgb(33 23 47 / 40%);
+  --color-balloon: #fff8d6;
+  --color-terminal: #140e1d;
+  --color-terminal-ink: #ddd0ff;
+  --color-pixel-ink: #1d1626;
+  --color-bubble-line: #2a1450;
 
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  --animate-wave: wave 2.6s ease-in-out infinite;
-  --animate-float: float 7s ease-in-out infinite;
-  --animate-pulse-ring: pulse-ring 1.8s ease-out infinite;
+  --animate-window-in: window-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-twinkle: twinkle 3.2s steps(2) infinite;
   --animate-blink: blink 1s steps(1) infinite;
+  --animate-drift: drift 90s linear infinite;
+  --animate-swish: swish 1.8s steps(1) infinite;
 
-  @keyframes wave {
-    0%,
-    60%,
-    100% {
-      transform: rotate(0deg);
-    }
-    10%,
-    30% {
-      transform: rotate(16deg);
-    }
-    20%,
-    40% {
-      transform: rotate(-10deg);
+  @keyframes window-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.96);
     }
   }
 
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0) rotate(0deg);
-    }
+  @keyframes twinkle {
     50% {
-      transform: translateY(-14px) rotate(8deg);
-    }
-  }
-
-  @keyframes pulse-ring {
-    0% {
-      box-shadow: 0 0 0 0 rgb(67 217 160 / 70%);
-    }
-    100% {
-      box-shadow: 0 0 0 10px rgb(67 217 160 / 0%);
+      opacity: 0.2;
     }
   }
 
@@ -77,69 +65,164 @@
       opacity: 0;
     }
   }
+
+  @keyframes swish {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes drift {
+    from {
+      transform: translateX(-60px);
+    }
+    to {
+      transform: translateX(300px);
+    }
+  }
 }
 
 :root[data-theme="dark"] {
-  --color-canvas: #120c1a;
-  --color-surface: #1d1429;
-  --color-ink: #f7f2ff;
-  --color-ink-soft: #dcd2e6;
-  --color-ink-muted: #b9abc6;
-  --color-line: #e6d6ff;
-  --color-brand: #7c3aed;
+  --color-face: #2e2739;
+  --color-face-lt: #3d3449;
+  --color-face-hi: #5c5070;
+  --color-face-lo: #17121e;
+  --color-face-dk: #050308;
+  --color-field: #1a1522;
+  --color-ink: #efe9f7;
+  --color-ink-soft: #c9bfd7;
+  --color-ink-muted: #a094b1;
   --color-brand-ink: #c4a4ff;
-  --color-brand-tint: #2a1b3c;
-  --shadow-sticker: 0 10px 20px -8px rgb(0 0 0 / 65%);
+  --color-brand-tint: #2c1d40;
+  --color-title-off-a: #3a3346;
+  --color-title-off-b: #50475e;
+  --color-balloon: #3a2f22;
+  --color-pixel-ink: #d9ccf0;
+  --color-bubble-line: #c9a8f5;
 }
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-@custom-variant hover-device {
-  @media (hover: hover) and (pointer: fine) {
-    @slot;
-  }
+/* Raised: buttons, the taskbar, menus. */
+@utility bevel {
+  box-shadow:
+    inset -1px -1px var(--color-face-dk),
+    inset 1px 1px var(--color-face-hi),
+    inset -2px -2px var(--color-face-lo),
+    inset 2px 2px var(--color-face-lt);
 }
 
-/* A chunky, pressable surface: lifts on hover, squashes on press. */
-@utility pop-press {
-  box-shadow: var(--shadow-pop);
-  transition:
-    translate 180ms var(--ease-spring),
-    box-shadow 180ms var(--ease-spring),
-    background-color 150ms ease-out,
-    color 150ms ease-out;
-
-  &:hover {
-    translate: -2px -2px;
-    box-shadow: 6px 6px 0 0 var(--color-line);
-  }
-
-  &:active {
-    translate: 3px 3px;
-    box-shadow: 1px 1px 0 0 var(--color-line);
-    transition-duration: 60ms;
-  }
+/* Pushed in: pressed buttons and toggles. */
+@utility bevel-pressed {
+  box-shadow:
+    inset -1px -1px var(--color-face-hi),
+    inset 1px 1px var(--color-face-dk),
+    inset -2px -2px var(--color-face-lt),
+    inset 2px 2px var(--color-face-lo);
 }
 
-@utility backface-hidden {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+/* Sunken: text fields, documents and lists. */
+@utility bevel-in {
+  box-shadow:
+    inset -1px -1px var(--color-face-hi),
+    inset 1px 1px var(--color-face-lo),
+    inset -2px -2px var(--color-face-lt),
+    inset 2px 2px var(--color-face-dk);
+}
+
+/* A shallow groove for status bar panels and the tray. */
+@utility bevel-thin {
+  box-shadow:
+    inset -1px -1px var(--color-face-hi),
+    inset 1px 1px var(--color-face-lo);
+}
+
+@utility bevel-window {
+  box-shadow:
+    inset -1px -1px var(--color-face-dk),
+    inset 1px 1px var(--color-face-lt),
+    inset -2px -2px var(--color-face-lo),
+    inset 2px 2px var(--color-face-hi),
+    6px 6px 0 0 rgb(20 8 40 / 32%);
+}
+
+/* A notched, stepped border, like a speech bubble in an old game. */
+@utility pixel-box {
+  box-shadow:
+    0 -3px 0 0 var(--color-bubble-line),
+    0 3px 0 0 var(--color-bubble-line),
+    -3px 0 0 0 var(--color-bubble-line),
+    3px 0 0 0 var(--color-bubble-line),
+    3px 6px 0 0 rgb(20 8 40 / 30%);
+}
+
+@utility title-active {
+  background: linear-gradient(
+    90deg,
+    var(--color-title-a),
+    var(--color-title-b)
+  );
+}
+
+@utility title-inactive {
+  background: linear-gradient(
+    90deg,
+    var(--color-title-off-a),
+    var(--color-title-off-b)
+  );
+}
+
+/* Chunky bevelled scrollbars inside windows. */
+@utility retro-scroll {
+  &::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--color-face-lt);
+    background-image: conic-gradient(
+      var(--color-face) 25%,
+      transparent 0 50%,
+      var(--color-face) 0 75%,
+      transparent 0
+    );
+    background-size: 2px 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-face);
+    box-shadow:
+      inset -1px -1px var(--color-face-dk),
+      inset 1px 1px var(--color-face-hi),
+      inset -2px -2px var(--color-face-lo),
+      inset 2px 2px var(--color-face-lt);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: var(--color-face);
+  }
 }
 
 @layer base {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
   html {
-    @apply bg-canvas text-ink scroll-smooth font-sans antialiased transition-colors duration-300;
-    /* Tilted cards and thrown stickers must never widen the page. */
-    overflow-x: clip;
+    @apply bg-title-a text-ink font-sans antialiased;
+    /* Windows that start open wait for the boot screen before popping in. */
+    --boot-delay: 1.85s;
+  }
+
+  html[data-booted] {
+    --boot-delay: 0s;
   }
 
   body {
-    @apply bg-canvas min-h-full overflow-x-clip overscroll-y-none;
-    background-image: radial-gradient(
-      color-mix(in oklab, var(--color-brand) 22%, transparent) 1.2px,
-      transparent 1.2px
-    );
-    background-size: 24px 24px;
+    overscroll-behavior: none;
   }
 
   ::selection {
@@ -147,17 +230,19 @@
   }
 
   :focus-visible {
-    @apply outline-brand outline-[3px] outline-offset-4;
+    outline: 2px dotted currentColor;
+    outline-offset: 2px;
   }
 
-  button:not(:disabled),
-  [role="button"]:not(:disabled) {
-    cursor: pointer;
+  @supports (-moz-appearance: none) {
+    .retro-scroll {
+      scrollbar-color: var(--color-face) var(--color-face-lt);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     html {
-      scroll-behavior: auto;
+      --boot-delay: 0s;
     }
 
     *,
@@ -167,5 +252,51 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+/* The boot screen is pure CSS so the prerendered page never waits on JS. These
+   rules are unlayered so they beat the display utilities on the element. */
+.boot-screen {
+  animation:
+    boot-fade 220ms ease-in 1.62s forwards,
+    boot-out 1ms 1.85s forwards;
+}
+
+.boot-screen [data-boot-bar] {
+  animation: boot-fill 1.5s steps(14, end) 0.15s both;
+}
+
+html[data-booted] .boot-screen:not([data-replay]) {
+  display: none;
+}
+
+@keyframes boot-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Hidden at every point of the animation, so rounding can never leave the
+   screen up and blocking clicks. */
+@keyframes boot-out {
+  from,
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes boot-fill {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-screen {
+    display: none;
   }
 }

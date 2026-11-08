@@ -1,18 +1,18 @@
 import type { ReactNode } from "react";
 import {
   HeadContent,
-  Link,
   Outlet,
   Scripts,
   createRootRoute,
+  useNavigate,
+  useRouterState,
 } from "@tanstack/react-router";
-import SiteHeader from "@/components/layout/site-header";
-import ProjectImageTransition from "@/components/projects/project-image-transition";
-import { popButtonClass } from "@/components/ui/pop-styles";
+import { DialogBox } from "@/components/os/message-box";
+import RugeOS from "@/components/os/ruge-os";
 import { FONT_STYLESHEET_URL, SITE_AUTHOR, SITE_NAME } from "@/config/site";
+import { OSProvider } from "@/contexts/os-provider";
 import { PlaygroundProvider } from "@/contexts/playground-provider";
 import { ThemeProvider } from "@/contexts/theme-provider";
-import { cn } from "@/lib/utils";
 import "@/index.css";
 
 const themeBootstrap = `
@@ -29,10 +29,19 @@ const themeBootstrap = `
     document.documentElement.style.colorScheme = theme;
     document.querySelector('meta[name="theme-color"]')?.setAttribute(
       "content",
-      theme === "dark" ? "#120c1a" : "#faf7ff",
+      theme === "dark" ? "#07030f" : "#2a0f5c",
     );
   } catch {
     document.documentElement.dataset.theme = "light";
+  }
+  // The boot screen plays once per visit.
+  try {
+    if (sessionStorage.getItem("rugefx-booted")) {
+      document.documentElement.dataset.booted = "";
+    }
+    sessionStorage.setItem("rugefx-booted", "1");
+  } catch {
+    // Without storage the boot screen simply plays every time.
   }
 })();
 `;
@@ -45,7 +54,7 @@ export const Route = createRootRoute({
         name: "viewport",
         content: "width=device-width, initial-scale=1.0",
       },
-      { name: "theme-color", content: "#faf7ff" },
+      { name: "theme-color", content: "#2a0f5c" },
       { name: "author", content: SITE_AUTHOR },
       { name: "robots", content: "index, follow" },
       { title: `${SITE_NAME} — ${SITE_AUTHOR}` },
@@ -70,9 +79,10 @@ function RootComponent() {
     <RootDocument>
       <ThemeProvider>
         <PlaygroundProvider>
-          <SiteHeader />
-          <Outlet />
-          <ProjectImageTransition />
+          <OSProvider>
+            <RugeOS />
+            <Outlet />
+          </OSProvider>
         </PlaygroundProvider>
       </ThemeProvider>
     </RootDocument>
@@ -94,22 +104,28 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   );
 }
 
+// Routes only pick which windows are open, so a missing page is an error
+// dialog over the desktop.
 function NotFoundPage() {
+  const navigate = useNavigate();
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+  const goHome = () => void navigate({ to: "/" });
+
   return (
-    <main className="flex min-h-svh flex-col items-center justify-center px-5 text-center">
-      <p className="font-hand text-ink-muted text-3xl">uh oh…</p>
-      <h1 className="font-display text-[clamp(96px,22vw,280px)] leading-none font-extrabold tracking-[-0.05em]">
-        4<span className="text-brand inline-block -rotate-12">0</span>4
-      </h1>
-      <p className="text-ink-soft mt-2 text-xl">
-        This page wandered off. It happens to the best of us.
+    <DialogBox
+      title="rugefx.dev"
+      icon="error"
+      buttons={[{ label: "OK", onClick: goHome }]}
+      onDismiss={goHome}
+    >
+      <p>
+        Cannot find <span className="font-mono">{pathname}</span>.
       </p>
-      <Link
-        to="/"
-        className={cn(popButtonClass, "bg-brand text-on-brand mt-8")}
-      >
-        Take me home
-      </Link>
-    </main>
+      <p className="mt-2">
+        Check the address and try again, or head back to the desktop.
+      </p>
+    </DialogBox>
   );
 }

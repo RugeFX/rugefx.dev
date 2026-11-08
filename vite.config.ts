@@ -5,11 +5,14 @@ import tailwindcss from "@tailwindcss/vite";
 import { imagetools } from "vite-imagetools";
 import { nitro } from "nitro/vite";
 import { fileURLToPath } from "node:url";
+import { projectSlugs } from "./src/content/project-slugs";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     tanstackStart({
+      // Project pages open as windows rather than links, so list them here.
+      pages: projectSlugs.map((slug) => ({ path: `/projects/${slug}` })),
       prerender: {
         enabled: true,
         concurrency: 1,

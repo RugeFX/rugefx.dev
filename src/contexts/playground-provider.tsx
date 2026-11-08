@@ -63,7 +63,7 @@ export function PlaygroundProvider({ children }: PlaygroundProviderProps) {
   const toggleSound = useCallback(() => {
     const next = !soundEnabled;
     setSoundEnabled(next);
-    if (next) playSound("pop");
+    if (next) playSound("toggle");
     try {
       localStorage.setItem(soundStorageKey, next ? "on" : "off");
     } catch {

@@ -26,3 +26,12 @@ export function useLocalTime(): string | null {
 
   return time;
 }
+
+/** What Zacky is probably up to at a given "HH:MM" time in Bekasi. */
+export function localMood(time: string) {
+  const hour = Number(time.slice(0, 2));
+  if (hour < 6) return "probably asleep. Probably.";
+  if (hour < 11) return "brewing the first kopi.";
+  if (hour < 18) return "shipping things.";
+  return "debugging something, most likely.";
+}

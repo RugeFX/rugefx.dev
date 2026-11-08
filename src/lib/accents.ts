@@ -12,24 +12,6 @@ export const accentBackground: Record<Accent, string> = {
   pink: "bg-pink text-on-accent",
 };
 
-export const accentStroke: Record<Accent, string> = {
-  brand: "stroke-brand",
-  sun: "stroke-sun",
-  mint: "stroke-mint",
-  sky: "stroke-sky",
-  tomato: "stroke-tomato",
-  pink: "stroke-pink",
-};
-
-export const accentHex: Record<Accent, string> = {
-  brand: "#7c3aed",
-  sun: "#ffc83d",
-  mint: "#43d9a0",
-  sky: "#6cc7ff",
-  tomato: "#ff7a59",
-  pink: "#ff9fcf",
-};
-
 export const projectAccent: Record<ProjectSlug, Accent> = {
   "qurban-asyik": "mint",
   "sattu-id": "sun",

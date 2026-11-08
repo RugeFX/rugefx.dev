@@ -1,8 +1,9 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import ProjectDetailPage from "@/pages/project-detail-page";
 import { getProjectBySlug } from "@/content/portfolio";
 import { createProjectSeoHead } from "@/lib/seo";
 
+// The OS opens the project's window for this URL; this route validates the
+// slug and sets the metadata.
 export const Route = createFileRoute("/projects/$projectSlug")({
   loader: ({ params }) => {
     const project = getProjectBySlug(params.projectSlug);
@@ -11,12 +12,5 @@ export const Route = createFileRoute("/projects/$projectSlug")({
   },
   head: ({ loaderData }) =>
     loaderData ? createProjectSeoHead(getProjectBySlug(loaderData)!) : {},
-  component: ProjectRoute,
+  component: () => null,
 });
-
-function ProjectRoute() {
-  const projectSlug = Route.useLoaderData();
-  const project = getProjectBySlug(projectSlug)!;
-
-  return <ProjectDetailPage key={project.slug} project={project} />;
-}

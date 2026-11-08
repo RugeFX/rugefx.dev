@@ -27,4 +27,4 @@ export const ELSEWHERE_LINKS = [
 ] as const;
 
 export const FONT_STYLESHEET_URL =
-  "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Caveat:wght@600;700&family=Figtree:wght@400..800&display=swap";
+  "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Pixelify+Sans:wght@400..700&display=swap";

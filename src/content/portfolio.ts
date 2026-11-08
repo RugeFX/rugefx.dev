@@ -213,7 +213,7 @@ export const projects: Project[] = [
     socialImage: "/og/rugefx.jpg",
     category: "Websites",
     description:
-      "My personal portfolio website, designed like a technical spec sheet. Built with TypeScript, React, TanStack Start, Vite, Tailwind CSS, and Motion, with variable-font type that bends under the cursor.",
+      "My personal portfolio, built as a tiny operating system: draggable windows, a working terminal, a Task Manager full of skills, and a pixel-art sunset on the desktop. Built with TypeScript, React, TanStack Start, Vite, Tailwind CSS, and Motion.",
     imageSrc: icon,
     siteUrl: null,
     repositoryUrl: "https://github.com/RugeFX/rugefx.dev",
