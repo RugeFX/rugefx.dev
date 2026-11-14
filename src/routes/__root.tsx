@@ -4,6 +4,7 @@ import {
   Outlet,
   Scripts,
   createRootRoute,
+  useMatch,
   useNavigate,
   useRouterState,
 } from "@tanstack/react-router";
@@ -75,12 +76,15 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+  // The résumé is a normal page, with no boot screen or desktop behind it.
+  const isResume = useMatch({ from: "/resume", shouldThrow: false });
+
   return (
     <RootDocument>
       <ThemeProvider>
         <PlaygroundProvider>
           <OSProvider>
-            <RugeOS />
+            {!isResume && <RugeOS />}
             <Outlet />
           </OSProvider>
         </PlaygroundProvider>

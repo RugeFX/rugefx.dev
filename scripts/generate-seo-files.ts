@@ -2,7 +2,11 @@ import { projectSlugs } from "../src/content/project-slugs";
 import { SITE_URL } from "../src/config/site";
 
 const publicDirectory = new URL("../public/", import.meta.url);
-const routes = ["/", ...projectSlugs.map((slug) => `/projects/${slug}`)];
+const routes = [
+  "/",
+  "/resume",
+  ...projectSlugs.map((slug) => `/projects/${slug}`),
+];
 const urls = routes
   .map(
     (path) => `  <url>

@@ -1,6 +1,6 @@
 # RugeFX Portfolio
 
-The portfolio of Ahmad Zacky, built as **RugeOS**: a little retro operating system in RugeFX purple. Drag and resize windows, browse projects in a file explorer, run commands in a terminal, poke at skills in the Task Manager, right-click the desktop, and try the Konami code. On phones it becomes a home screen of apps, and Start → Plain view puts everything on one page.
+The portfolio of Ahmad Zacky, built as **RugeOS**: a little retro operating system in RugeFX purple. Drag and resize windows, browse projects in a file explorer, run commands in a terminal, poke at skills in the Task Manager, right-click the desktop, and try the Konami code. On phones it becomes a home screen of apps, and Start → Plain view puts everything on one page. For job applications, `/resume` is that same content as a normal page with no desktop.
 
 ## ✨ Features
 

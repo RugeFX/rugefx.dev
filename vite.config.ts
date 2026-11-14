@@ -11,8 +11,11 @@ import { projectSlugs } from "./src/content/project-slugs";
 export default defineConfig({
   plugins: [
     tanstackStart({
-      // Project pages open as windows rather than links, so list them here.
-      pages: projectSlugs.map((slug) => ({ path: `/projects/${slug}` })),
+      // RugeOS opens these from buttons rather than links, so list them here.
+      pages: [
+        { path: "/resume" },
+        ...projectSlugs.map((slug) => ({ path: `/projects/${slug}` })),
+      ],
       prerender: {
         enabled: true,
         concurrency: 1,

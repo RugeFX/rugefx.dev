@@ -3,7 +3,7 @@ export const SITE_NAME = "RugeFX";
 export const SITE_AUTHOR = "Ahmad Zacky";
 export const SITE_LOCALE = "en_US";
 
-export const CONTACT_EMAIL = "zackfxg@gmail.com";
+export const CONTACT_EMAIL = "ahmad.zacky.dev@gmail.com";
 export const RESUME_URL =
   "https://docs.google.com/document/d/1Fh4tgO5LSXGCdzDGPtST5pniM-a08Ar-O8dW1SvMmDY/edit?usp=sharing";
 

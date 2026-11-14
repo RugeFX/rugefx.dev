@@ -102,6 +102,27 @@ export function createHomeSeoHead() {
   });
 }
 
+export function createResumeSeoHead() {
+  return createSeoHead({
+    title: `${SITE_AUTHOR} — Software Engineer Résumé`,
+    description:
+      "Experience, projects and skills of Ahmad Zacky, a software engineer in Bekasi, Indonesia.",
+    path: "/resume",
+    imagePath: "/og/rugefx.jpg",
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      url: absoluteUrl("/resume"),
+      mainEntity: {
+        "@type": "Person",
+        "@id": `${SITE_URL}/#person`,
+        name: SITE_AUTHOR,
+        url: `${SITE_URL}/`,
+      },
+    },
+  });
+}
+
 export function createProjectSeoHead(project: Project) {
   const title = `${project.title} — Project by ${SITE_AUTHOR}`;
   const path = `/projects/${project.slug}`;

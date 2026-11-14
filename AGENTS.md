@@ -27,7 +27,7 @@
 ## Architecture
 
 - React 19 + TypeScript + TanStack Start/Router + Vite + Tailwind CSS 4, deployed to Vercel via Nitro
-- Routes in `src/routes` are prerendered (project pages are listed in `vite.config.ts`). They only set metadata: the root route renders RugeOS, and a `/projects/$projectSlug` URL opens that project's window
+- Routes in `src/routes` are prerendered (`/resume` and project pages are listed in `vite.config.ts`). Most only set metadata: the root route renders RugeOS, and a `/projects/$projectSlug` URL opens that project's window. `/resume` is the exception, a normal page for job applications that the root renders without RugeOS; it shares `components/os/plain-content.tsx` with the plain view
 - Design: RugeOS, a retro desktop OS in RugeFX purple. Screens 1024px and wider get a desktop with draggable windows, a taskbar and Start menu; smaller screens get a phone home screen. Both shells are prerendered and CSS picks one until hydration
 - Content: portfolio data in `src/content/portfolio.ts`, bio and skills in `src/content/about.ts`; project slugs in `src/content/project-slugs.ts` (also drives the sitemap)
 - Server: `src/routes/api/github-contributions.ts` reads the public GitHub contributions calendar (no token) and returns JSON with edge caching; `useGithubContributions()` fetches it once per visit for the Task Manager and the terminal

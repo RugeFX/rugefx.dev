@@ -3,6 +3,9 @@ export const buttonClass =
 
 export const fieldClass = "bevel-in bg-field text-ink";
 
+export const plainLinkClass =
+  "text-brand-ink underline decoration-1 underline-offset-2 hover:decoration-2";
+
 /** An etched group box, like a fieldset in a settings dialog. */
 export const groupClass =
   "border-face-lo relative border px-3 pt-4 pb-3 shadow-[inset_1px_1px_0_var(--color-face-hi),1px_1px_0_var(--color-face-hi)]";
